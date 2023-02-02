@@ -1,6 +1,6 @@
 # Tiur
 
-![tiur-statue](images/tiur-statue.jpeg)
+![tiur-statue](images/tiur-image.jpeg)
 
 Tiur is a static documentation site generator written in Python.
 
