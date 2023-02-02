@@ -18,7 +18,7 @@ Tiur is a static documentation site generator written in Python.
 
 # More information
 
-More information about the philosophy of Tiur can be found [here](https://github.com/JeremyReimer/Tiur/docs/why-tiur.md) 
+More information about the philosophy of Tiur can be found [here](https://github.com/JeremyReimer/Tiur/blob/docs/why-tiur.md) 
 
 # Status
 
