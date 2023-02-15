@@ -18,7 +18,7 @@ Tiur is a static documentation site generator written in Python.
 
 # Tiur logo
 
-![tiur-statue](images/tiur-logo-filled-350.jpeg)
+![tiur-statue](images/tiur-logo-filled-350.png)
 
 # More information
 
