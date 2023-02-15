@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('admin/', admin.site.urls),
-    path('<page_url>/', views.pageview, name='pageview'),
+#   path('admin/', admin.site.urls),
+    path('<page_url>/latest/', views.pageview, name='pageview'),
 ]
