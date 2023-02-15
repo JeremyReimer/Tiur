@@ -16,6 +16,10 @@ Tiur is a static documentation site generator written in Python.
 * Supports authentication for both the site and the repositories
 * Includes automatic, built-in search
 
+# Tiur logo
+
+![tiur-statue](images/tiur-logo-filled-350.jpeg)
+
 # More information
 
 More information about the philosophy of Tiur can be found [here](https://github.com/JeremyReimer/Tiur/blob/main/docs/why-tiur.md).
