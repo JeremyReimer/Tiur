@@ -1,6 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Page Title</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+{% load static %}
+<link rel="stylesheet" href="{% static 'oxford2/style.css' %}">
+<style>
+</style>
+<script src=""></script>
+
 <body>
-<head>
-</head>
+
 <h1>Project lists</h1>
 {% if project_list %}
  <ul>
@@ -13,4 +23,5 @@
 {% endif %}
 <h2>Current project</h2>
 <p> {{ current_project }} </p>
+
 </body>
