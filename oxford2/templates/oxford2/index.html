@@ -25,7 +25,7 @@
   </div>
   <div class="w3-row">
     <div class="w3-bar w3-blue">
-      <a href="#home" class="w3-bar-item w3-button">Home</a>
+      <a href="#home" class="w3-bar-item w3-button w3-white">Home</a>
       <a href="#doc-tab1" class="w3-bar-item w3-button">Doc-Tab-1</a>
       <a href="#doc-tab2" class="w3-bar-item w3-button">Doc-Tab-2</a>
       <a href="#doc-tab3" class="w3-bar-item w3-button">Doc-Tab-3</a>
@@ -47,7 +47,7 @@
       <p> {{ current_project }} </p>
     </div>
     <div class="w3-threequarter w3-yellow">
-      <h1>HTML DOC GOES HERE</h1>
+      {{ page_content|safe }}
     </div>
   </div>
   <div class="w3-row w3-black">
