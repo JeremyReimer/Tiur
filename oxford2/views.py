@@ -3,10 +3,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.conf import settings
+from django.shortcuts import redirect
 from .models import Project
 
 def index(request):
-    return HttpResponse("Hello, world! This is Oxford 2.0's index.")
+    response = redirect('/misc/latest')
+    return response
 
 def pageview(request, page_url):
     project_list = Project.objects.order_by('name')
