@@ -5,3 +5,11 @@ __pycache__/
 
 # Database file
 db.sqlite3
+
+# Secrets file
+secrets.ini
+
+# Testing
+test-scrape.py
+test.txt
+
