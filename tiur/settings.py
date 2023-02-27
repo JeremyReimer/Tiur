@@ -26,6 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', "default_value")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# The following Allowed Host is an internal VM used for development--delete in prod
 ALLOWED_HOSTS = ['10.175.132.172']
 
 
