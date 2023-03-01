@@ -4,10 +4,46 @@
 <title>Page Title</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 {% load static %}
-<link rel="stylesheet" href="{% static 'oxford2/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'oxford2/style.css' %}">
 <style>
+ul, #myUL {
+  list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */'
+  transform: rotate(90deg);  
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
 </style>
-<script src="{% static 'oxford2/navtree.js' %}"></script>
 
 <body>
 
@@ -34,16 +70,19 @@
   </div>
   <div class="w3-row">
     <div class="w3-quarter w3-light-grey">
-      <h1>Project lists</h1>
-      {% if project_list %}
-        <ul>
-        {% for project in project_list %}
-          <li>Project name: {{ project.name }}</li>
-        {% endfor %}
-        </ul>
-      {% else %}
-        <p>No projects available.</p>
-      {% endif %}
+      <ul id="myUL">
+        <li><span class="caret">All services</span>
+        {% if project_list %}
+          {% for project in project_list %}
+          <ul class="nested">
+            <li>{{ project.name }}</li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <p>No services available.</p>
+        {% endif %}
+        </li>
+      </ul>
       <h2>Current project</h2>
       <p> {{ current_project }} </p>
     </div>
@@ -55,4 +94,15 @@
     <h3>Powered by Tiur.</h3>
   </div>
 </div>
+<script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+</script>
 </body>
