@@ -73,14 +73,15 @@ ul, #myUL {
       <ul id="myUL">
         <li><span class="caret">All services</span>
         {% if project_list %}
-          {% for project in project_list %}
           <ul class="nested">
-            <li>{{ project.name }}</li>
+          {% for project in project_list %}
+            <li><a href="/{{ project.name }}/latest/">{{ project.display_name }}</a></li>
+            <li><span class="caret">Test subheadings</span><ul class="nested"><li>Test item 1</li><li>Test item2</li></ul>
           {% endfor %}
-          </ul>
         {% else %}
           <p>No services available.</p>
         {% endif %}
+        </ul>
         </li>
       </ul>
       <h2>Current project</h2>
