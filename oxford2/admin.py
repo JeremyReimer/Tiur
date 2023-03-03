@@ -5,6 +5,20 @@ from django.http import HttpResponse
 import jenkins
 import requests
 import subprocess
+import os
+import dotenv
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# Load secret environment variable keys
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    load_dotenv(dotenv_file)
+JENKINS_TOKEN = os.environ.get('JENKINS_TOKEN', "default_value")
 
 # Functions related to collecting documents start below
 
@@ -77,6 +91,7 @@ def collect_docs(modeladmin, request, queryset):
     response = response + querystring
     print(request)
     print(queryset)
+    print(JENKINS_TOKEN)
     # collect the docs for the current project(s)
     return HttpResponse(response)
 
