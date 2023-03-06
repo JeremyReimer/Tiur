@@ -87,7 +87,7 @@ h2:hover .headerlink {
   <div class="w3-row">
     <div class="w3-quarter w3-light-grey">
       <ul id="myUL">
-        <li><span class="caret">All services</span>
+        <li><span class="caret" id="allservices">All services</span>
         {% if project_list %}
           <ul class="nested">
           {% for project in project_list %}
@@ -121,5 +121,8 @@ for (i = 0; i < toggler.length; i++) {
     this.classList.toggle("caret-down");
   });
 }
+
+var siteloadbtn = document.getElementById("allservices");
+siteloadbtn.click()
 </script>
 </body>
