@@ -18,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
+JENKINS_USER = os.environ.get('JENKINS_USER', "default_value")
 JENKINS_TOKEN = os.environ.get('JENKINS_TOKEN', "default_value")
 
 # Functions related to collecting documents start below
@@ -38,7 +39,7 @@ def runcmd(cmd, verbose = False, *args, **kwargs):
     pass
 
 def make_scrape_cmd(user, api_token, artifact_directory, artifact_url, artifact_file):
-    command = 'wget -O ' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
+    command = 'wget -O ' + artifact_directory + '/' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
     return command
 
 def strip_extraneous(text_string):
@@ -91,11 +92,11 @@ def collect_docs(modeladmin, request, queryset):
     querystring = querystring.replace("<","[")
     response = response + querystring
     # get URL for project downloading
+    project_name = queryset.values_list('name')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
     print(collect_url)
-    print(request)
-    print(queryset)
-    print(JENKINS_TOKEN)
+    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, os.path.join(BASE_DIR, "oxford2", "artifacts", project_name), collect_url, "index.html")
+    print(command)
     # collect the docs for the current project(s)
     return HttpResponse(response)
 
