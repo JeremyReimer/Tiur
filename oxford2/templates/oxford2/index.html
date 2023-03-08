@@ -85,7 +85,8 @@ h2:hover .headerlink {
     </div>
   </div>
   <div class="w3-row">
-    <div class="w3-quarter w3-light-grey">
+    <div class="w3-quarter w3-white">
+      <p></p>
       <ul id="myUL">
         <li><span class="caret" id="allservices">All services</span>
         {% if project_list %}
@@ -103,7 +104,7 @@ h2:hover .headerlink {
       <h2>Current project</h2>
       <p> {{ current_project }} </p>
     </div>
-    <div class="w3-threequarter w3-white">
+    <div class="w3-half w3-white">
       {{ page_content|safe }}
     </div>
   </div>

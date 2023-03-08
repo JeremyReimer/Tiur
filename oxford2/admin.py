@@ -120,12 +120,11 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
         else:
             print("Found bad link: " + test_link)
     if len(clean_list) > 0:
-        # If there are items in the link list, download them
-        # TEMPORARY- don't download, just print out
+        # If there are items in the cleaned link list, download them
         for link in clean_list:
             print(link)
             # TODO: Need to extract any subdirectory information from this
-            # Call the function recursively (WARNING: may run endlessly if link to earlier page)
+            # Call the function recursively (WARNING: may run endlessly if there's a link to earlier page)
             scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, link)
     else:
         print("All done!")
