@@ -65,20 +65,19 @@ def strip_extraneous(text_string):
     text_stripped = text_string[start_num:end_num]
     return text_stripped
 
-def find_images(text_string, sub_string, end_string):
+def find_snippets(text_string, sub_string, end_string):
     text_start = 0
-    images_list = []
-    strip_string = '<img alt="'
+    snippets_list = []
     while True:
         text_start = text_string.find(sub_string, text_start)
         if text_start == -1:
             break
         text_end = text_string.find(end_string, text_start + 1)
         text_snippet = text_string[text_start:text_end]
-        text_snippet = text_snippet[len(strip_string):] # take out img tag
-        images_list.append(text_snippet)
+        text_snippet = text_snippet[len(sub_string):] # take out opening tag
+        snippets_list.append(text_snippet)
         text_start = text_end + len(end_string)
-    return images_list
+    return snippets_list
 
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
@@ -94,8 +93,14 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
     file_handle = open(artifact_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
     file_handle.close()
+    # get image list
+    image_list = find_snippets(file_stripped_text, '<img alt="', '" ')
+    # get internal link list
+    link_list = find_snippets(file_stripped_text, '<a class="reference internal" href="', '">')
     # return confirmation (debugging for now)
     return_message = "Scraped: " + artifact_file + " from " + collect_url
+    return_message += " Image list: " + str(image_list)
+    return_message += " Link list: " + str(link_list)
     return return_message
 
 @admin.action(description='Collect latest docs for selected projects')
