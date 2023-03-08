@@ -81,26 +81,54 @@ def find_snippets(text_string, sub_string, end_string):
 
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
+    # debugging
+    print("Downloading " + artifact_file)
+    print(" into " + artifact_directory)
+    print(" from " + collect_url)
+    # check if this directory exists, otherwise create it
+    if os.path.isdir(artifact_directory):
+        print("Directory exists!")
+    else:
+        os.mkdir(artifact_directory)
     run_cmd(command)
     # strip headers
     file_handle = open(artifact_directory + '/' + artifact_file, 'r')
     file_raw_text = file_handle.read()
     file_stripped_text = strip_extraneous(file_raw_text)
     file_handle.close()
+    # get image list
+    image_list = find_snippets(file_stripped_text, '<img alt="', '" ')
     # Replace image URLs
     file_stripped_text = file_stripped_text.replace('_images/', '/static/oxford2/artifacts/')
     # Save the stripped file back to where it was
     file_handle = open(artifact_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
     file_handle.close()
-    # get image list
-    image_list = find_snippets(file_stripped_text, '<img alt="', '" ')
     # get internal link list
     link_list = find_snippets(file_stripped_text, '<a class="reference internal" href="', '">')
     # return confirmation (debugging for now)
     return_message = "Scraped: " + artifact_file + " from " + collect_url
     return_message += " Image list: " + str(image_list)
     return_message += " Link list: " + str(link_list)
+    # Remove any bad links. Bad links are images that link to themselves, or links to pages
+    # that have already been downloaded. We don't want to have them in our list.
+    clean_list = [] # Make a blank list to copy into
+    for test_link in link_list:
+        print("Checking link: " + test_link)
+        if (test_link.find('.png') == -1 and test_link.find('.jpg') == -1 and test_link.find('#') == -1):
+            clean_list.append(test_link)
+        else:
+            print("Found bad link: " + test_link)
+    if len(clean_list) > 0:
+        # If there are items in the link list, download them
+        # TEMPORARY- don't download, just print out
+        for link in clean_list:
+            print(link)
+            # TODO: Need to extract any subdirectory information from this
+            # Call the function recursively (WARNING: may run endlessly if link to earlier page)
+            scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, link)
+    else:
+        print("All done!")
     return return_message
 
 @admin.action(description='Collect latest docs for selected projects')
