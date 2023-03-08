@@ -23,7 +23,7 @@ JENKINS_TOKEN = os.environ.get('JENKINS_TOKEN', "default_value")
 
 # Functions related to collecting documents start below
 
-def runcmd(cmd, verbose = False, *args, **kwargs):
+def run_cmd(cmd, verbose = False, *args, **kwargs):
 
 
     process = subprocess.Popen(
@@ -91,13 +91,25 @@ def collect_docs(modeladmin, request, queryset):
     querystring = querystring.replace(">","]")
     querystring = querystring.replace("<","[")
     response = response + querystring
-    # get URL for project downloading
+    # get name and URL for project downloading
     project_name = queryset.values_list('name')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
-    print(collect_url)
-    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, os.path.join(BASE_DIR, "oxford2", "artifacts", project_name), collect_url, "index.html")
-    print(command)
-    # collect the docs for the current project(s)
+    # collect docs from URL and save to artifacts directory
+    artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
+    artifact_file = "index.html" # temporary
+    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
+    run_cmd(command)
+    # strip headers
+    file_handle = open(artifact_directory + '/' + artifact_file, 'r')
+    file_raw_text = file_handle.read()
+    file_stripped_text = strip_extraneous(file_raw_text)
+    file_handle.close()
+    # Replace image URLs
+    file_stripped_text = file_stripped_text.replace('_images/', '/static/oxford2/artifacts/')
+    # Save the stripped file back to where it was
+    file_handle = open(artifact_directory + '/' + artifact_file, 'w')
+    file_handle.write(file_stripped_text)
+    file_handle.close()
     return HttpResponse(response)
 
 class ProjectAdmin(admin.ModelAdmin):
