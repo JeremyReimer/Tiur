@@ -1,14 +1,29 @@
 from django.contrib import admin
 from django.core import serializers
 from django.http import HttpResponse
-
-import jenkins
-import requests
+from .models import Category
+from .models import BuildType
+from .models import ParserType
+from .models import Project
+from .models import NavTreeItem
+from .models import Version
+from .models import Config
+#import jenkins
+#import requests
 import subprocess
 import os
 import dotenv
 from dotenv import load_dotenv
 from pathlib import Path
+
+admin.site.register(Category)
+admin.site.register(BuildType)
+admin.site.register(ParserType)
+#admin.site.register(Project)
+admin.site.register(NavTreeItem)
+admin.site.register(Version)
+admin.site.register(Config)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -65,38 +80,7 @@ def find_images(text_string, sub_string, end_string):
         text_start = text_end + len(end_string)
     return images_list
 
-
-
-from .models import Category
-from .models import BuildType
-from .models import ParserType
-from .models import Project
-from .models import NavTreeItem
-from .models import Version
-from .models import Config
-
-admin.site.register(Category)
-admin.site.register(BuildType)
-admin.site.register(ParserType)
-#admin.site.register(Project)
-admin.site.register(NavTreeItem)
-admin.site.register(Version)
-admin.site.register(Config)
-
-@admin.action(description='Collect latest docs for selected projects')
-def collect_docs(modeladmin, request, queryset):
-    response = "This is debug text " + "some more text"
-    # debug code
-    querystring = str(queryset)
-    querystring = querystring.replace(">","]")
-    querystring = querystring.replace("<","[")
-    response = response + querystring
-    # get name and URL for project downloading
-    project_name = queryset.values_list('name')[0][0]
-    collect_url = queryset.values_list('artifact_url')[0][0]
-    # collect docs from URL and save to artifacts directory
-    artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
-    artifact_file = "index.html" # temporary
+def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
     run_cmd(command)
     # strip headers
@@ -110,6 +94,22 @@ def collect_docs(modeladmin, request, queryset):
     file_handle = open(artifact_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
     file_handle.close()
+    # return confirmation (debugging for now)
+    return_message = "Scraped: " + artifact_file + " from " + collect_url
+    return return_message
+
+@admin.action(description='Collect latest docs for selected projects')
+def collect_docs(modeladmin, request, queryset):
+    response = "Collecting data for projects..."
+    # get name and URL for project downloading
+    project_name = queryset.values_list('name')[0][0]
+    collect_url = queryset.values_list('artifact_url')[0][0]
+    # collect docs from URL and save to artifacts directory
+    artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
+    artifact_file = "index.html" # temporary
+    # run scraping function
+    scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file) 
+    response = response + scrape_message
     return HttpResponse(response)
 
 class ProjectAdmin(admin.ModelAdmin):
