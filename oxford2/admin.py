@@ -38,7 +38,7 @@ def runcmd(cmd, verbose = False, *args, **kwargs):
     pass
 
 def make_scrape_cmd(user, api_token, artifact_directory, artifact_url, artifact_file):
-    command = 'wget -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
+    command = 'wget -O ' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
     return command
 
 def strip_extraneous(text_string):
@@ -85,10 +85,14 @@ admin.site.register(Config)
 @admin.action(description='Collect latest docs for selected projects')
 def collect_docs(modeladmin, request, queryset):
     response = "This is debug text " + "some more text"
+    # debug code
     querystring = str(queryset)
     querystring = querystring.replace(">","]")
     querystring = querystring.replace("<","[")
     response = response + querystring
+    # get URL for project downloading
+    collect_url = queryset.values_list('artifact_url')[0][0]
+    print(collect_url)
     print(request)
     print(queryset)
     print(JENKINS_TOKEN)
