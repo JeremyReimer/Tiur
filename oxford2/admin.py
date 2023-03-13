@@ -100,6 +100,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
     if os.path.isdir(artifact_directory):
         print("Directory exists!")
     else:
+        print("Creating directory...")
         os.mkdir(artifact_directory)
     run_cmd(command)
     # strip headers
@@ -131,6 +132,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
         else:
             print("Found bad link: " + test_link)
     if len(clean_list) > 0:
+        print("Running through list of links...")
         # If there are items in the cleaned link list, download them
         for link in clean_list:
             print(link)
@@ -138,6 +140,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
             file_and_directory = get_sub_directory(link)
             artifact_directory = file_and_directory[0]
             artifact_file = file_and_directory[1]
+            collect_url = collect_url + artifact_directory 
             # Call the function recursively (WARNING: may run endlessly if there's a link to earlier page)
             scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
     else:
