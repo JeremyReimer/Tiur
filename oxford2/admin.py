@@ -87,7 +87,8 @@ def get_sub_directory(input_directory):
             last_separator = (dir_length - idx) # iterating through string in reverse order
             break
     final_dir = input_directory[:last_separator]
-    return final_dir
+    final_filename = input_directory[last_separator:]
+    return final_dir, final_filename
 
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
@@ -134,9 +135,11 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
         for link in clean_list:
             print(link)
             # Need to extract any subdirectory information from each link
-            artifact_directory = get_sub_directory(link)
+            file_and_directory = get_sub_directory(link)
+            artifact_directory = file_and_directory[0]
+            artifact_file = file_and_directory[1]
             # Call the function recursively (WARNING: may run endlessly if there's a link to earlier page)
-            scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, link)
+            scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
     else:
         print("All done!")
     return return_message
