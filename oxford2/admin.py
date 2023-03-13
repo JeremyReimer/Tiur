@@ -86,11 +86,15 @@ def get_sub_directory(input_directory):
         if c == '/':
             last_separator = (dir_length - idx) # iterating through string in reverse order
             break
-    final_dir = input_directory[:last_separator]
-    final_filename = input_directory[last_separator:]
+    if last_separator == len(input_directory):
+        final_dir = ''
+        final_filename = input_directory
+    else: 
+        final_dir = input_directory[:last_separator]
+        final_filename = input_directory[last_separator:]
     return final_dir, final_filename
 
-def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file):
+def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
     # debugging
     print("Downloading " + artifact_file)
@@ -138,11 +142,11 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
             print(link)
             # Need to extract any subdirectory information from each link
             file_and_directory = get_sub_directory(link)
-            artifact_directory = file_and_directory[0]
+            artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, file_and_directory[0])
             artifact_file = file_and_directory[1]
-            collect_url = collect_url + artifact_directory 
+            collect_url = collect_url + file_and_directory[0]
             # Call the function recursively (WARNING: may run endlessly if there's a link to earlier page)
-            scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
+            scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file)
     else:
         print("All done!")
     return return_message
@@ -157,7 +161,7 @@ def collect_docs(modeladmin, request, queryset):
     artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
     artifact_file = "index.html" # temporary
     # run scraping function
-    scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file) 
+    scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 
     response = response + scrape_message
     return HttpResponse(response)
 
