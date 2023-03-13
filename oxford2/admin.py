@@ -79,6 +79,16 @@ def find_snippets(text_string, sub_string, end_string):
         text_start = text_end + len(end_string)
     return snippets_list
 
+def get_sub_directory(input_directory):
+    dir_length = len(input_directory)
+    last_separator = dir_length
+    for idx,c in enumerate(reversed(input_directory)):
+        if c == '/':
+            last_separator = (dir_length - idx) # iterating through string in reverse order
+            break
+    final_dir = input_directory[:last_separator]
+    return final_dir
+
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
     # debugging
@@ -123,7 +133,8 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, ar
         # If there are items in the cleaned link list, download them
         for link in clean_list:
             print(link)
-            # TODO: Need to extract any subdirectory information from this
+            # Need to extract any subdirectory information from each link
+            artifact_directory = get_sub_directory(link)
             # Call the function recursively (WARNING: may run endlessly if there's a link to earlier page)
             scrape_docs(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, link)
     else:
