@@ -10,10 +10,10 @@ def index(request):
     response = redirect('/misc/latest')
     return response
 
-def pageview(request, page_url, page):
+def pageview(request, page_url, page, directory=''):
     project_list = Project.objects.order_by('name')
     template = loader.get_template('oxford2/index.html')
-    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, page)
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, directory, page)
     nav_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', 'navtree.html')
     try: 
       with open(page_url_full, "r", encoding="utf-8") as f:
