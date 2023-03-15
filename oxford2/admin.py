@@ -94,21 +94,21 @@ def get_sub_directory(input_directory):
         final_filename = input_directory[last_separator:]
     return final_dir, final_filename
 
-def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file):
-    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, artifact_directory, collect_url, artifact_file)
+def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, incoming_url, artifact_file):
+    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
     # debugging
     print("Downloading " + artifact_file)
-    print(" into " + artifact_directory)
-    print(" from " + collect_url)
+    print(" into " + incoming_directory)
+    print(" from " + incoming_url)
     # check if this directory exists, otherwise create it
-    if os.path.isdir(artifact_directory):
+    if os.path.isdir(incoming_directory):
         print("Directory exists!")
     else:
         print("Creating directory...")
-        os.mkdir(artifact_directory)
+        os.mkdir(incoming_directory)
     run_cmd(command)
     # strip headers
-    file_handle = open(artifact_directory + '/' + artifact_file, 'r')
+    file_handle = open(incoming_directory + '/' + artifact_file, 'r')
     file_raw_text = file_handle.read()
     file_stripped_text = strip_extraneous(file_raw_text)
     file_handle.close()
@@ -117,13 +117,13 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, c
     # Replace image URLs
     file_stripped_text = file_stripped_text.replace('_images/', '/static/oxford2/artifacts/')
     # Save the stripped file back to where it was
-    file_handle = open(artifact_directory + '/' + artifact_file, 'w')
+    file_handle = open(incoming_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
     file_handle.close()
     # get internal link list
     link_list = find_snippets(file_stripped_text, '<a class="reference internal" href="', '">')
     # return confirmation (debugging for now)
-    return_message = "Scraped: " + artifact_file + " from " + collect_url
+    return_message = "Scraped: " + artifact_file + " from " + incoming_url
     return_message += " Image list: " + str(image_list)
     return_message += " Link list: " + str(link_list)
     # Remove any bad links. Bad links are images that link to themselves, or links to pages
@@ -142,9 +142,11 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, c
             print(link)
             # Need to extract any subdirectory information from each link
             file_and_directory = get_sub_directory(link)
-            artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, file_and_directory[0])
+            artifact_relative_directory = file_and_directory[1]
+            # now combine this path with the incoming directory plus the relative link
+            artifact_directory = incoming_directory + '/' + file_and_directory[0] 
             artifact_file = file_and_directory[1]
-            collect_url = collect_url + file_and_directory[0]
+            collect_url = incoming_url + file_and_directory[0]
             # Call the function recursively (WARNING: may run endlessly if there's a link to earlier page)
             scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file)
     else:
