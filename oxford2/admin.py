@@ -160,7 +160,7 @@ def collect_docs(modeladmin, request, queryset):
     project_name = queryset.values_list('name')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
     # collect docs from URL and save to artifacts directory
-    artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
+    artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, "latest")
     artifact_file = "index.html" # temporary
     # run scraping function
     scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 

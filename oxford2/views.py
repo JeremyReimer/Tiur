@@ -13,8 +13,11 @@ def index(request):
 def pageview(request, page_url, page, directory=''):
     project_list = Project.objects.order_by('name')
     template = loader.get_template('oxford2/index.html')
-    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, directory, page)
+    base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, page)
+    page_url_partial = page_url_full.replace(base_url, '') # use this for auto clicking on navtree
     nav_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', 'navtree.html')
+    print(page_url_partial) # debugging
     try: 
       with open(page_url_full, "r", encoding="utf-8") as f:
           page_content = f.read() 
