@@ -110,10 +110,8 @@ for (i = 0; i < toggler.length; i++) {
 
 var siteloadbtn = document.getElementById("allservices");
 siteloadbtn.click()
-var testloadbtn = document.getElementById("/auth3/latest/index.html");
-testloadbtn.click()
-var testloadbtn2 = document.getElementById("/auth3/latest/overview/index.html");
-testloadbtn2.click()
+
+{{ click_list | safe }}
 
 </script>
 </body>

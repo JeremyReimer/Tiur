@@ -26,11 +26,18 @@ def pageview(request, page_url, page, directory=''):
           nav_content = n.read()
     except:
           nav_content = 'Unable to load navigation tree.'
+    # figure out which folders to click open to display current page in navbar
+    click_list = 'var testloadbtn = document.getElementById("/auth3/latest/index.html");\n'
+    click_list += 'testloadbtn.click()\n'
+    click_list += 'var testloadbtn2 = document.getElementById("/auth3/latest/overview/index.html");\n'
+    click_list += 'testloadbtn2.click()\n'
+
     context = {
        'project_list': project_list,
        'current_project': page_url,
        'page_content': page_content,
        'nav_content': nav_content,
+       'click_list': click_list,
     }
     return HttpResponse(template.render(context, request))
 
