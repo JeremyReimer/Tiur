@@ -12,9 +12,18 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+import dotenv
+from dotenv import load_dotenv
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load secret environment variable keys
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    load_dotenv(dotenv_file)
 
 # Default login URL
 LOGIN_URL = '/accounts/login/?next=/'
@@ -127,3 +136,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "django_auth_ldap.backend.LDAPBackend",
+]
+
+AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN', "default_value")
+AUTH_LDAP_BIND_PW = os.environ.get('AUTH_LDAP_BIND_PW', "default_value")
+AUTH_LDAP_OU_DC = os.environ.get('AUTH_LDAP_OU_DC', "default_value")
+AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_OU_DC, ldap.SCOPE_SUBTREE, "(samAccountName=%(user)s)")
+
+# debugging
+print(AUTH_LDAP_OU_DC)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]}},
+}
