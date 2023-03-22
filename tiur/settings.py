@@ -15,7 +15,7 @@ from pathlib import Path
 import dotenv
 from dotenv import load_dotenv
 import ldap
-from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPSearchUnion, ActiveDirectoryGroupType
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -142,10 +142,12 @@ AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend",
 ]
 
+AUTH_LDAP_SERVER_URI = os.environ.get('AUTH_LDAP_SERVER_URI', "default_value")
 AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN', "default_value")
 AUTH_LDAP_BIND_PW = os.environ.get('AUTH_LDAP_BIND_PW', "default_value")
+AUTH_LDAP_BIND_PASSWORD = AUTH_LDAP_BIND_PW
 AUTH_LDAP_OU_DC = os.environ.get('AUTH_LDAP_OU_DC', "default_value")
-AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_OU_DC, ldap.SCOPE_SUBTREE, "(samAccountName=%(user)s)")
+AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_OU_DC, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
 
 # debugging
 print(AUTH_LDAP_OU_DC)
