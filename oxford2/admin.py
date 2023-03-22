@@ -131,7 +131,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
     clean_list = [] # Make a blank list to copy into
     for test_link in link_list:
         print("Checking link: " + test_link)
-        if (test_link.find('.png') == -1 and test_link.find('.jpg') == -1 and test_link.find('#') == -1):
+        if (test_link.find('.png') == -1 and test_link.find('.jpg') == -1 and test_link.find('#') == -1 and test_link.find('..') == -1):
             clean_list.append(test_link)
         else:
             print("Found bad link: " + test_link)
