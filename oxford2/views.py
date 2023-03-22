@@ -1,4 +1,5 @@
 import os
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
@@ -6,10 +7,12 @@ from django.conf import settings
 from django.shortcuts import redirect
 from .models import Project
 
+@login_required
 def index(request):
     response = redirect('/misc/latest')
     return response
 
+@login_required
 def pageview(request, page_url, page, directory=''):
     project_list = Project.objects.order_by('name')
     template = loader.get_template('oxford2/index.html')
