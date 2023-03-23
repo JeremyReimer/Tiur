@@ -58,6 +58,21 @@ h2:hover .headerlink {
   color: lightblue;
 }
 
+/* Style the search box inside the navigation bar */
+.searchbar input[type=text] {
+  float: right;
+  padding: 0px;
+  width: 300px;
+  border: 0px;
+  margin-top: 5px;
+  margin-right: 10px;
+  font-size: 17px;
+}
+
+.searchbar img {
+  float: right;
+  margin-top: 5px;
+}
 
 </style>
 
@@ -82,6 +97,10 @@ h2:hover .headerlink {
       <a href="#doc-tab1" class="w3-bar-item w3-button">Doc-Tab-1</a>
       <a href="#doc-tab2" class="w3-bar-item w3-button">Doc-Tab-2</a>
       <a href="#doc-tab3" class="w3-bar-item w3-button">Doc-Tab-3</a>
+      <div class="searchbar">
+        <input type="text" id="search-input" class="search-input" placeholder="Search all docs...">
+        <img src={% static 'oxford2/search.png' %}>
+      </div>
     </div>
   </div>
   <div class="w3-row">
@@ -90,7 +109,11 @@ h2:hover .headerlink {
       {{ nav_content | safe }}
     </div>
     <div class="w3-half w3-white">
-      {{ page_content|safe }}
+      <div class="w3-row">
+        {{ page_content|safe }}
+      </div>
+    </div>
+    <div class="w3-quarter w3-white">
     </div>
   </div>
   <div class="w3-row w3-black">
