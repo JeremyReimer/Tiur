@@ -145,7 +145,7 @@ AUTHENTICATION_BACKENDS = [
 AUTH_LDAP_SERVER_URI = os.environ.get('AUTH_LDAP_SERVER_URI', "default_value")
 AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN', "default_value")
 AUTH_LDAP_BIND_PW = os.environ.get('AUTH_LDAP_BIND_PW', "default_value")
-AUTH_LDAP_BIND_PASSWORD = AUTH_LDAP_BIND_PW
+AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PW', "default_value")
 AUTH_LDAP_OU_DC = os.environ.get('AUTH_LDAP_OU_DC', "default_value")
 AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_OU_DC, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
 

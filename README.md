@@ -32,4 +32,10 @@ Tiur is currently in development. Here's what's been written so far:
 * Database model in Django that allows admin users to create lists of different projects in categories
 * Admin code that will scrape projects from a custom URL, with authentication
 * Code that will build a left-hand navigation tree with Javascript-enabled dynamic folders (IN PROGRESS)
-* Basic authentication for the site, with optional LDAP authentication (IN PROGRESS)
+* Basic authentication for the site, with optional LDAP authentication
+
+Here's what's still to come:
+
+* Full-text dynamic indexed search
+* Automatic versioning support
+* LOTS of testing
