@@ -85,28 +85,33 @@ h2:hover .headerlink {
   background-color: gray;
 }
 
-.search-result {
+.search-results {
   position: absolute;
   top: 13%;
-  left: 72%;
+  left: 74%;
   color: white;
   width: 25%;
-  padding: 10px;
-  background-color: gray;
-  border-style: solid;
-  border-color: black;
+  background-color: rgba(0,0,0,0.5);
+  border-style: none;
+}
+
+.search-result-preview {
+  position: relative;
+  left: 30%;
+}
+
+.search-results-list-item:hover {
+  color: yellow;
 }
 
 .search-result.doc-title {
+  weight: bold;
+  color: black;
   position: relative;
-  top: 0;
-  left: 0;
+  left: 5%;
 }
 
 .search-result.search-result-title {
-  position: relative;
-  top: 0;
-  left: 0;
 }
 
 .search-result-highlight {
@@ -140,8 +145,8 @@ h2:hover .headerlink {
       <div class="searchbar">
         <input type="text" id="search-input" class="search-input" placeholder="Search all docs...">
         <img src={% static 'oxford2/search.png' %}>
-        <div id="search-results" class="search-results"></div>
       </div>
+      <div id="search-results" class="search-results"></div>
     </div>
   </div>
   <div class="w3-row">

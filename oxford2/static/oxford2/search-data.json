@@ -1,9 +1,16 @@
-{"0": {
+{
+"0": {
     "doc": "Home",
     "title": "Home",
     "content": "This is the default template for search data. | After publishing, this file should be populated with your actual text from each page, for instance search capabilities. ",
     "url": "/",
-    
+    "relUrl": "/"
+  },
+"1": {
+    "doc": "Test",
+    "title": "Test",
+    "content": "Secondary testing page for search. A hollow voice says plugh.",
+    "url": "/",
     "relUrl": "/"
   }
 }
