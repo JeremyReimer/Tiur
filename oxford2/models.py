@@ -60,6 +60,7 @@ class Version(models.Model):
 class Config(models.Model):
     polling_time = models.FloatField()
     max_versions = models.IntegerField()
-    def __str__(self):
+    site_logo = models.FileField(default='logo.png', upload_to='static/oxford2/')
+    def __float__(self):
         return self.polling_time
     
