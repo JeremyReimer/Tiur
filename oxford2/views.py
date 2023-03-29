@@ -33,6 +33,9 @@ def pageview(request, page_url, page, directory=''):
           nav_content = n.read()
     except:
           nav_content = 'Unable to load navigation tree.'
+    # Highlight current page in navbar
+    print("Current page: " + page_url_partial) # debugging
+    nav_content = nav_content.replace('"' + page_url_partial + '"','"' + page_url_partial + '" class=activepage') 
     # figure out which folders to click open to display current page in navbar
     click_list = ''
     for x in range(1, len(page_url_split)-2):
