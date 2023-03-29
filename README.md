@@ -33,9 +33,14 @@ Tiur is currently in development. Here's what's been written so far:
 * Admin code that will scrape projects from a custom URL, with authentication
 * Code that will build a left-hand navigation tree with Javascript-enabled dynamic folders (IN PROGRESS)
 * Basic authentication for the site, with optional LDAP authentication
+* Global, full-text indexed search using Lunr.js
 
 Here's what's still to come:
 
-* Full-text dynamic indexed search
+* Code cleanup and unit tests
+* Customization (logos, favicons, footer messages)
 * Automatic versioning support
 * LOTS of testing
+* And LOTS of bugfixing, no doubt!
+* Dockerization
+
