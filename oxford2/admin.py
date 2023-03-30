@@ -12,9 +12,13 @@ from .models import Config
 #import requests
 import subprocess
 import os
+import re
 import dotenv
 from dotenv import load_dotenv
 from pathlib import Path
+
+# Precompile the HTMl removal regex
+HREMOVE = re.compile('<.*?>')
 
 admin.site.register(Category)
 admin.site.register(BuildType)
@@ -35,6 +39,33 @@ if os.path.isfile(dotenv_file):
     load_dotenv(dotenv_file)
 JENKINS_USER = os.environ.get('JENKINS_USER', "default_value")
 JENKINS_TOKEN = os.environ.get('JENKINS_TOKEN', "default_value")
+
+# Functions related to building the navtree start below
+
+def remove_html(input_html):
+    cleaned_text = input_html
+    cleaned_text = cleaned_text.replace('<p>',' | ')
+    cleaned_text = cleaned_text.replace('<br>',' | ')
+    cleaned_text = re.sub(HREMOVE, '', cleaned_text)
+    cleaned_text = cleaned_text.replace('¶', '')
+    cleaned_text = cleaned_text.replace('"', '')
+    cleaned_text = cleaned_text.replace('\\', '')
+    cleaned_text = cleaned_text.replace('/', '')
+    cleaned_text = cleaned_text.replace('\n', ' | ')
+    return cleaned_text
+
+def push_index(incoming_list): # sort the list so index.html is first
+    outgoing_list = []
+    is_there_an_index = 0
+    for thing in incoming_list:
+        if thing != 'index.html':
+            outgoing_list.append(thing)
+        else:
+            is_there_an_index = 1
+    if is_there_an_index == 1:
+        outgoing_list.insert(0,'index.html')
+    return outgoing_list
+
 
 # Functions related to collecting documents start below
 
@@ -151,6 +182,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
             scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file)
     else:
         print("All done!")
+    return_message += "\n<p>Click <a href='/admin'> here</a> to return to the Admin page.</p>"
     return return_message
 
 @admin.action(description='Collect latest docs for selected projects')
