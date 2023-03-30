@@ -12,13 +12,9 @@ from .models import Config
 #import requests
 import subprocess
 import os
-import re
 import dotenv
 from dotenv import load_dotenv
 from pathlib import Path
-
-# Precompile the HTMl removal regex
-HREMOVE = re.compile('<.*?>')
 
 admin.site.register(Category)
 admin.site.register(BuildType)
@@ -32,7 +28,6 @@ admin.site.register(Config)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Load secret environment variable keys
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
@@ -40,38 +35,9 @@ if os.path.isfile(dotenv_file):
 JENKINS_USER = os.environ.get('JENKINS_USER', "default_value")
 JENKINS_TOKEN = os.environ.get('JENKINS_TOKEN', "default_value")
 
-# Functions related to building the navtree start below
-
-def remove_html(input_html):
-    cleaned_text = input_html
-    cleaned_text = cleaned_text.replace('<p>',' | ')
-    cleaned_text = cleaned_text.replace('<br>',' | ')
-    cleaned_text = re.sub(HREMOVE, '', cleaned_text)
-    cleaned_text = cleaned_text.replace('¶', '')
-    cleaned_text = cleaned_text.replace('"', '')
-    cleaned_text = cleaned_text.replace('\\', '')
-    cleaned_text = cleaned_text.replace('/', '')
-    cleaned_text = cleaned_text.replace('\n', ' | ')
-    return cleaned_text
-
-def push_index(incoming_list): # sort the list so index.html is first
-    outgoing_list = []
-    is_there_an_index = 0
-    for thing in incoming_list:
-        if thing != 'index.html':
-            outgoing_list.append(thing)
-        else:
-            is_there_an_index = 1
-    if is_there_an_index == 1:
-        outgoing_list.insert(0,'index.html')
-    return outgoing_list
-
-
 # Functions related to collecting documents start below
 
 def run_cmd(cmd, verbose = False, *args, **kwargs):
-
-
     process = subprocess.Popen(
         cmd,
         stdout = subprocess.PIPE,
@@ -185,9 +151,9 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
     return_message += "\n<p>Click <a href='/admin'> here</a> to return to the Admin page.</p>"
     return return_message
 
-@admin.action(description='Collect latest docs for selected projects')
+@admin.action(description='Collect latest docs for selected project')
 def collect_docs(modeladmin, request, queryset):
-    response = "Collecting data for projects..."
+    response = "Collecting data for project..."
     # get name and URL for project downloading
     project_name = queryset.values_list('name')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
@@ -195,8 +161,12 @@ def collect_docs(modeladmin, request, queryset):
     artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, "latest")
     artifact_file = "index.html" # temporary
     # run scraping function
+    print('--------------------------------------------------')
     scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 
     response = response + scrape_message
+    # generate navtree and searchfile
+    run_cmd('python3 ' + os.path.join(BASE_DIR, "oxford2", "make-tree.py"), Verbose=1) # run separate command to generate these
+    # finish everything, return
     return HttpResponse(response)
 
 class ProjectAdmin(admin.ModelAdmin):
