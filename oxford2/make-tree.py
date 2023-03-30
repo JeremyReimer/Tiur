@@ -6,8 +6,6 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 global navtree_html
 navtree_html = ''
-global list_of_services
-list_of_services=['auth3','misc'] # This will be generated dynamically in admin.py
 global page_count
 page_count = 0 # For building the search index file search-data.json
 global search_file
