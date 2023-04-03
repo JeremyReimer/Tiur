@@ -60,7 +60,7 @@ class Version(models.Model):
 class Config(models.Model):
     polling_time = models.FloatField()
     max_versions = models.IntegerField()
-    site_logo = models.FileField(default='logo.png', upload_to='static/oxford2/')
+    site_logo = models.FileField(default='static/oxford2/logo.png', upload_to='static/oxford2/')
     footer_message = models.CharField(default='Powered by Tiur Docs.', max_length=100)
     start_page = models.CharField(default = '/', max_length=200)
     def __float__(self):

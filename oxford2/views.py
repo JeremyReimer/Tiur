@@ -20,6 +20,8 @@ def index(request):
 def pageview(request, page_url, page, directory=''):
     project_list = Project.objects.order_by('name')
     footer_text = Config.objects.all().first().footer_message
+    logo_filename = Config.objects.all().first().site_logo
+    #print(logo_filename)
     template = loader.get_template('oxford2/index.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
     page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, page)
@@ -57,6 +59,7 @@ def pageview(request, page_url, page, directory=''):
        'nav_content': nav_content,
        'click_list': click_list,
        'footer_text': footer_text,
+       'logo_filename': logo_filename,
     }
     return HttpResponse(template.render(context, request))
 
