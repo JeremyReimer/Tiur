@@ -6,15 +6,20 @@ from django.template import loader
 from django.conf import settings
 from django.shortcuts import redirect
 from .models import Project
+from .models import Config
 
 @login_required
 def index(request):
-    response = redirect('/misc/latest')
+    config_info = Config.objects.all().first().start_page
+    if config_info == '/':
+       config_info = 'misc/latest' # debugging
+    response = redirect(config_info) 
     return response
 
 @login_required
 def pageview(request, page_url, page, directory=''):
     project_list = Project.objects.order_by('name')
+    footer_text = Config.objects.all().first().footer_message
     template = loader.get_template('oxford2/index.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
     page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, page)
@@ -51,6 +56,7 @@ def pageview(request, page_url, page, directory=''):
        'page_content': page_content,
        'nav_content': nav_content,
        'click_list': click_list,
+       'footer_text': footer_text,
     }
     return HttpResponse(template.render(context, request))
 

@@ -137,7 +137,9 @@ h2:hover .headerlink {
     </div>
     <div class="w3-quarter">
       <p>Welcome, {{ user.get_username }} <a href="{% url 'logout' %}">Sign Out</a></p>
+      {% if user.is_superuser %}
       <p><a href="/admin">Admin panel</a></p>
+      {% endif %} 
     </div>
   </div>
   <div class="w3-row">
@@ -167,7 +169,7 @@ h2:hover .headerlink {
     </div>
   </div>
   <div class="w3-row w3-black">
-    <h4>Powered by Tiur.</h4>
+    <h4>&nbsp; {{ footer_text|safe }}</h4>
   </div>
 </div>
 <script>
