@@ -1,5 +1,20 @@
-import re
 import os
+import sys
+sys.path.append( os.path.join('..', 'tiur'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tiur.settings")
+import django
+from django.conf import settings
+django.setup()
+from oxford2.models import Category
+#from .models import BuildType
+#from .models import ParserType
+#from .models import Project
+#from .models import NavTreeItem
+#from .models import Version
+#from .models import Config
+
+
+import re
 import subprocess
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -122,7 +137,7 @@ nav_file_handle.close()
 search_file += "}\n"
 # fix final trailing comma
 search_file = search_file.replace('    },\n}\n','    }\n}\n')
-print(search_file)
+#print(search_file)
 search_file_handle = open(os.path.join(BASE_DIR, "oxford2", "static", "oxford2", "search-data.json"), "w")
 search_file_handle.write(search_file)
 search_file_handle.close()
