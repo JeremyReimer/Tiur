@@ -37,6 +37,12 @@ class Project(models.Model):
     weight = models.FloatField()
     visible = models.BooleanField()
     active = models.BooleanField()
+    # override save argument to run updating script
+    def save(self, *args, **kwargs):
+        # call the save() method of the parent
+        super(Project, self).save(*args, **kwargs)
+        # call custom script
+        print("Overriding save...")
     def __str__(self):
         return self.name
 
