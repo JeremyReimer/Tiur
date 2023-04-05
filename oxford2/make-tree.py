@@ -5,6 +5,12 @@ import subprocess
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# Load the project list file so we can exclude hidden projects
+project_list_handle = open(os.path.join(BASE_DIR, "oxford2", "projects.csv"), "r")
+project_list_content = project_list_handle.read()
+project_list_handle.close()
+project_list = project_list_content.split("\n")[:-1]
+# load global variables for navtree, page count, and search index
 global navtree_html
 navtree_html = ''
 global page_count
@@ -67,7 +73,15 @@ def generate_navtree(base_directory):
             print("Directory: " + str(thing))
             new_dir = os.path.join(start_dir,thing)
             print('Now looking into: ' + new_dir)
-            if new_dir.find('..') == -1: # never go back recursively
+            # check to see if this directory is for a hidden project
+            hidden_project = 0 # default is visible
+            for project in project_list:
+                project_data = project.split(', ')
+                if str(thing) == project_data[0]: # first, find the right project
+                    if project_data[7] == "False": # is it marked not visible?
+                        print("*** HIDDEN PROJECT DIRECTORY! ****")
+                        hidden_project = 1
+            if new_dir.find('..') == -1 and hidden_project == 0: # don't go back recursively, avoid hidden
                 generate_navtree(new_dir) # recursively walk through the directories
         else:
             print("File: " + str(thing))
@@ -127,3 +141,6 @@ search_file = search_file.replace('    },\n}\n','    }\n}\n')
 search_file_handle = open(os.path.join(BASE_DIR, "oxford2", "static", "oxford2", "search-data.json"), "w")
 search_file_handle.write(search_file)
 search_file_handle.close()
+
+# debugging
+print(project_list)
