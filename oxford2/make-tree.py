@@ -1,19 +1,5 @@
 import os
 import sys
-sys.path.append( os.path.join('..', 'tiur'))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tiur.settings")
-import django
-from django.conf import settings
-django.setup()
-from oxford2.models import Category
-#from .models import BuildType
-#from .models import ParserType
-#from .models import Project
-#from .models import NavTreeItem
-#from .models import Version
-#from .models import Config
-
-
 import re
 import subprocess
 from pathlib import Path
