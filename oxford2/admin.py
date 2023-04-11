@@ -157,7 +157,14 @@ def collect_docs(modeladmin, request, queryset):
     # get name and URL for project downloading
     project_name = queryset.values_list('name')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
-    # collect docs from URL and save to artifacts directory
+    # first, make sure the project base directory exists
+    artifact_base_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
+    if os.path.isdir(artifact_base_directory):
+        print("Directory exists!")
+    else:
+        print("Creating directory...")
+        os.mkdir(artifact_base_directory)
+    # collect docs from URL and save to project directory under "latest"
     artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, "latest")
     artifact_file = "index.html" # temporary
     # run scraping function

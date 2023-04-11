@@ -1,4 +1,24 @@
+import os
+import subprocess
+from pathlib import Path
 from django.db import models
+
+
+def run_cmd(cmd, verbose = False, *args, **kwargs):
+    process = subprocess.Popen(
+        cmd,
+        stdout = subprocess.PIPE,
+        stderr = subprocess.PIPE,
+        text = True,
+        shell = True
+    )
+    std_out, std_err = process.communicate()
+    if verbose:
+        print(std_out.strip(), std_err)
+    pass
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # These are the basic tables for Oxford 2.0:
 # They are under the following categories:
@@ -41,8 +61,11 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         # call the save() method of the parent
         super(Project, self).save(*args, **kwargs)
-        # call custom script
-        print("Overriding save...")
+        # call custom script to make project list
+        print("Overriding save function to rebuild project list csv...")
+        run_cmd('python3 ' + os.path.join(BASE_DIR, "make-list.py"), Verbose=1)
+        # rebuild the nav tree (in case we changed visibility)
+        run_cmd('python3 ' + os.path.join(BASE_DIR, "oxford2", "make-tree.py"), Verbose=1)
     def __str__(self):
         return self.name
 
