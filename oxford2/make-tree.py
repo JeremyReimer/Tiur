@@ -58,6 +58,11 @@ def push_index(incoming_list): # sort the list so index.html is first
         outgoing_list.insert(0,'index.html')
     return outgoing_list
 
+def add_category_view(base_directory):
+    # This adds an optional category-based view of projects
+    # just a stub for now
+    return    
+
 def generate_navtree(base_directory):
     global navtree_html
     global search_file
@@ -120,14 +125,18 @@ def generate_navtree(base_directory):
             else:
                 print('Skipping file...')
     print('Finished directory, moving on...')
-    navtree_html += '</ul>\n'
+    navtree_html += '</ul></li>\n'
+    return
 
 navtree_html += '<ul id="myUL">\n'
 navtree_html += '<li><span class="caret" id="allservices">All services</span>\n'
 navtree_html += '<ul class="nested">'
 generate_navtree('')
+add_category_view('') # add the category view to the tree
 navtree_html += '</li>\n'
 navtree_html += '</ul>\n'
+# Quick fix for excess close tags, will fix properly later
+navtree_html = navtree_html.replace('</ul></li>\n</ul></li>\n</ul></li>\n', '</ul></li>\n</ul></li>\n')
 print('All done!')
 print('Saving to navtree.html...')
 nav_file_handle = open(os.path.join(BASE_DIR, "oxford2", "artifacts", "navtree.html"), 'w')
