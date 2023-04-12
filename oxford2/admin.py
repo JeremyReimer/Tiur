@@ -172,7 +172,7 @@ def collect_docs(modeladmin, request, queryset):
     scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 
     response = response + scrape_message
     # generate navtree and searchfile
-    run_cmd('python3 ' + os.path.join(BASE_DIR, "oxford2", "make-tree.py"), Verbose=1) # run separate command to generate these
+    run_cmd('python3 ' + os.path.join(BASE_DIR, "make-list.py"), Verbose=1) # run separate command to generate these
     # finish everything, return
     return HttpResponse(response)
 

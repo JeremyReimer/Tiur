@@ -1,3 +1,6 @@
+# DEPRECATED - this file is merged into ../make-list.py
+# Leaving here for now just in case, will delete later
+
 import os
 import sys
 import re
