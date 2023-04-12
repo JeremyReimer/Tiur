@@ -1,3 +1,6 @@
+# This script builds a list of projects and categories, and then generates
+# the file navtree.html which is the left-hand nav panel
+# It also generates the search file search-data.json
 import os
 import sys
 import re
@@ -10,6 +13,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tiur.settings")
 django.setup()
 from oxford2.models import Category
 from oxford2.models import Project
+global category_list
 category_list = []
 for category in Category.objects.all():
     category_list.append(category)
@@ -17,7 +21,6 @@ for category in Category.objects.all():
     print("Category: " + str(category) + " Projects: " + str(project_list))
     for project in project_list:
         print("Project name: " + str(project.display_name))
-print(category_list)
 project_file = "" # will save a list of projects to projects.csv
 for project in Project.objects.all():
     project_data = project.name + ", "
@@ -94,8 +97,15 @@ def push_index(incoming_list): # sort the list so index.html is first
     return outgoing_list
 
 def add_category_view(base_directory):
+    global navtree_html
+    global category_list
     # This adds an optional category-based view of projects
-    # just a stub for now
+    navtree_html += '<li><span class="caret" id="allservices">Categories</span>\n'
+    navtree_html += '<ul class="nested">'
+    for category in category_list:
+        print(category.display_name)
+        navtree_html += '<li>' + str(category.display_name) + '</li>'
+    navtree_html += '</ul></li>'
     return
 
 def generate_navtree(base_directory):
@@ -188,4 +198,4 @@ search_file_handle.close()
 
 # debugging
 print(project_list)
-
+print(category_list)
