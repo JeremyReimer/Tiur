@@ -104,13 +104,17 @@ def add_category_view(base_directory):
         navtree_html += '<ul class="nested">'
         for project in cat_project_list:
             print("-- Project: " + str(project.display_name))
-            navtree_html += '<li><a href="' + '#link' + '">' + str(project.display_name) + '</a></li>\n'
+            page_file_name = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", str(project.name), "latest", "index.html")
+            print("Need to load file: " + str(page_file_name))
+            page_file_handle = open(page_file_name, "r")
+            page_file_handle_content = page_file_handle.read()
+            #print(page_file_handle_content)
+            page_file_first_link = find_snippets(page_file_handle_content,'<a class="reference internal" href="', '">')[0]
+            page_file_full_link = '/' + str(project.name) + '/latest/' + page_file_first_link
+            print("Link to file: " + str(page_file_full_link))
+            page_file_handle.close()
+            navtree_html += '<li><a href="' + page_file_full_link + '">' + str(project.display_name) + '</a></li>\n'
         navtree_html += '</ul></li>'
-    #for project in project_list:
-    #    print("Project name: " + str(project.display_name))
-    #for category in category_list:
-    #    print(category.display_name)
-    #    navtree_html += '<li>' + str(category.display_name) + '</li>'
     navtree_html += '</ul></li>'
     return
 
@@ -179,6 +183,7 @@ def generate_navtree(base_directory):
     navtree_html += '</ul></li>\n'
     return
 
+# start of main script
 navtree_html += '<ul id="myUL">\n'
 navtree_html += '<li><span class="caret" id="allservices">All services</span>\n'
 navtree_html += '<ul class="nested">'
