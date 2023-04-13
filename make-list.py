@@ -15,12 +15,6 @@ from oxford2.models import Category
 from oxford2.models import Project
 global category_list
 category_list = []
-for category in Category.objects.all():
-    category_list.append(category)
-    project_list = Project.objects.filter(category=category).order_by("weight")
-    print("Category: " + str(category) + " Projects: " + str(project_list))
-    for project in project_list:
-        print("Project name: " + str(project.display_name))
 project_file = "" # will save a list of projects to projects.csv
 for project in Project.objects.all():
     project_data = project.name + ", "
@@ -102,9 +96,21 @@ def add_category_view(base_directory):
     # This adds an optional category-based view of projects
     navtree_html += '<li><span class="caret" id="allservices">Categories</span>\n'
     navtree_html += '<ul class="nested">'
-    for category in category_list:
-        print(category.display_name)
-        navtree_html += '<li>' + str(category.display_name) + '</li>'
+    for category in Category.objects.all().order_by("display_name"):
+        #category_list.append(category)
+        cat_project_list = Project.objects.filter(category=category).order_by("weight")
+        print("Category: " + str(category))
+        navtree_html += '<li><span class="caret" id="allservices">' + str(category) + '</span>\n'
+        navtree_html += '<ul class="nested">'
+        for project in cat_project_list:
+            print("-- Project: " + str(project.display_name))
+            navtree_html += '<li><a href="' + '#link' + '">' + str(project.display_name) + '</a></li>\n'
+        navtree_html += '</ul></li>'
+    #for project in project_list:
+    #    print("Project name: " + str(project.display_name))
+    #for category in category_list:
+    #    print(category.display_name)
+    #    navtree_html += '<li>' + str(category.display_name) + '</li>'
     navtree_html += '</ul></li>'
     return
 
@@ -197,5 +203,4 @@ search_file_handle.write(search_file)
 search_file_handle.close()
 
 # debugging
-print(project_list)
-print(category_list)
+#print(navtree_html)
