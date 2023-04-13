@@ -110,10 +110,23 @@ def add_category_view(base_directory):
             page_file_handle_content = page_file_handle.read()
             #print(page_file_handle_content)
             page_file_first_link = find_snippets(page_file_handle_content,'<a class="reference internal" href="', '">')[0]
-            page_file_full_link = '/' + str(project.name) + '/latest/' + page_file_first_link
+            print('First link:' + str(page_file_first_link))   
+            page_file_full_link = str(project.name) + '/latest/' + page_file_first_link
             print("Link to file: " + str(page_file_full_link))
             page_file_handle.close()
-            navtree_html += '<li><a href="' + page_file_full_link + '">' + str(project.display_name) + '</a></li>\n'
+            if page_file_first_link.find('index.html') != -1: # If it's an index file, go one level deeper
+                next_file_name = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", page_file_full_link) 
+                print('Grabbing next level of navigation...' + str(next_file_name))
+                next_file_handle = open(next_file_name, "r")
+                next_file_handle_content = next_file_handle.read()
+                next_file_first_link = find_snippets(next_file_handle_content,'<a class="reference internal" href="', '">')[0]
+                next_file_first_link = page_file_first_link.replace('index.html','') + next_file_first_link 
+            else:
+                next_file_first_link = page_file_first_link
+            next_file_full_link = '/' + str(project.name) + '/latest/' + next_file_first_link
+            print('Final project page link is: ' + str(next_file_full_link))
+            next_file_handle.close()
+            navtree_html += '<li><a href="' + next_file_full_link + '">' + str(project.display_name) + '</a></li>\n'
         navtree_html += '</ul></li>'
     navtree_html += '</ul></li>'
     return
