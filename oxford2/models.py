@@ -63,9 +63,8 @@ class Project(models.Model):
         super(Project, self).save(*args, **kwargs)
         # call custom script to make project list
         print("Overriding save function to rebuild project list csv...")
+        # rebuild nav tree (in case we changed visibility)
         run_cmd('python3 ' + os.path.join(BASE_DIR, "make-list.py"), Verbose=1)
-        # rebuild the nav tree (in case we changed visibility)
-        run_cmd('python3 ' + os.path.join(BASE_DIR, "oxford2", "make-tree.py"), Verbose=1)
     def __str__(self):
         return self.name
 
