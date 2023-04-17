@@ -52,6 +52,7 @@ def run_cmd(cmd, verbose = False, *args, **kwargs):
 
 def make_scrape_cmd(user, api_token, artifact_directory, artifact_url, artifact_file):
     command = 'wget -O ' + artifact_directory + '/' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
+    print('Executing command: ' + command)
     return command
 
 def strip_extraneous(text_string):
@@ -157,6 +158,8 @@ def collect_docs(modeladmin, request, queryset):
     # get name and URL for project downloading
     project_name = queryset.values_list('name')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
+    # remove extraneous index.html from the URL if it exists
+    collect_url = collect_url.replace('index.html','')
     # first, make sure the project base directory exists
     artifact_base_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name)
     if os.path.isdir(artifact_base_directory):
