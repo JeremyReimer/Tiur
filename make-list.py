@@ -182,13 +182,24 @@ def generate_navtree(base_directory):
                     search_file += '    "relUrl": "' + page_url +'"\n'
                     search_file += '    },\n'
                     page_count += 1
-                    navtree_html += '<li><a href="' + page_url + '">' + page_title + '</a></li>\n'
-                else:
+                    #navtree_html += '<li><a href="' + page_url + '">' + page_title + '</a></li>\n'
+                else: # it is an index.html
                     print("It's a subfolder!")
                     folder_title = find_snippets(page_content, '<h1>', '<a')[0]
                     print("Folder title: " + folder_title)
                     navtree_html += '<li><span class="caret" id="' + page_url + '">' + folder_title + '</a></span>\n'
                     navtree_html += '<ul class="nested">\n'
+                    # add all links inside this index.html to the navtree at once
+                    inside_index_links = find_snippets(page_content, '<a class="reference internal" href="', '</a></li>')
+                    # quick fix for URL (since we're doing it a new way)
+                    page_url = page_url.replace('index.html', '')
+                    for index_link in inside_index_links:
+                        divider = index_link.find('">')
+                        index_sub_link = index_link[:divider]
+                        index_description = index_link[divider + 2:]
+                        print('$$$$$$$$$ Adding page: ' + index_description + ' link: ' + index_sub_link)
+                        if index_sub_link.find('index.html') == -1:
+                            navtree_html += '<li><a href="' + page_url + index_sub_link + '">' + index_description + '</a></li>\n'
                 #print('Adding to navtree: ' + navtree_adding)
             else:
                 print('Skipping file...')
