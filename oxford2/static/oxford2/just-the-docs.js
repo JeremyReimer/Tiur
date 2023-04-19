@@ -331,7 +331,8 @@ function searchLoaded(index, docs) {
       }
       var resultRelUrl = document.createElement('span');
       resultRelUrl.classList.add('search-result-rel-url');
-      resultRelUrl.innerText = doc.relUrl;
+      /* Replace the relative link with a blank line, since it's not important */
+      resultRelUrl.innerText = '\n';
       resultTitle.appendChild(resultRelUrl);
     }
 

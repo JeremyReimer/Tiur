@@ -88,20 +88,40 @@ h2:hover .headerlink {
 .search-results {
   position: absolute;
   top: 13%;
-  left: 74%;
+  left: 75%;
+  right: 100%;
   color: white;
   width: 25%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgb(64,64,64); 
   border-style: none;
+}
+
+.search-result {
+  display: block;
+  padding: 0.25rem 0.75rem;
+}
+
+.search-result-rel-url {
+  color: blue;
+}
+
+.search-result-rel-url.a {
+  text-decoration: none;
+}
+
+.search-result-doc-title {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .search-result-preview {
   position: relative;
-  left: 30%;
+  left: 5%;
 }
 
 .search-results-list-item:hover {
-  color: yellow;
+  background-color: lightgrey;
+  color: black;
 }
 
 .search-result.doc-title {
