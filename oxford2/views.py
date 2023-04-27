@@ -9,6 +9,12 @@ from .models import Project
 from .models import Config
 
 @login_required
+def set_dark_mode(request):
+    html = HttpResponse('<p>Dark mode set.</p>')
+    html.set_cookie('dw_docs_dark_mode', 'dark', max_age= None, expires = None)
+    return html
+
+@login_required
 def index(request):
     config_info = Config.objects.all().first().start_page
     if config_info == '/':
