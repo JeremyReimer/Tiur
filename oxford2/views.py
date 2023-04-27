@@ -2,6 +2,7 @@ import os
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.template import loader
 from django.conf import settings
 from django.shortcuts import redirect
@@ -10,8 +11,14 @@ from .models import Config
 
 @login_required
 def set_dark_mode(request):
-    html = HttpResponse('<p>Dark mode set.</p>')
+    html = HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     html.set_cookie('dw_docs_dark_mode', 'dark', max_age= None, expires = None)
+    return html
+
+@login_required
+def rm_dark_mode(request):
+    html = HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    html.delete_cookie('dw_docs_dark_mode', 'Removed dark mode')
     return html
 
 @login_required
@@ -27,6 +34,12 @@ def pageview(request, page_url, page, directory='', subdirectory=''):
     project_list = Project.objects.order_by('name')
     footer_text = Config.objects.all().first().footer_message
     logo_filename = Config.objects.all().first().site_logo
+    darkcookie = request.COOKIES.get('dw_docs_dark_mode')
+    if darkcookie == "dark":
+        darkmode = True
+    else:
+        darkmode = False
+    print(darkmode)
     #print(logo_filename)
     template = loader.get_template('oxford2/index.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
@@ -66,6 +79,7 @@ def pageview(request, page_url, page, directory='', subdirectory=''):
        'click_list': click_list,
        'footer_text': footer_text,
        'logo_filename': logo_filename,
+       'darkmode': darkmode,
     }
     return HttpResponse(template.render(context, request))
 

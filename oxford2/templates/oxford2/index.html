@@ -161,7 +161,11 @@ h2:hover .headerlink {
       {% if user.is_superuser %}
       <a href="/admin">Admin panel</a>
       {% endif %} 
+      {% if darkmode %}
+      <a href="/rmdarkmode">Light mode</a></p>
+      {% else %}
       <a href="/setdarkmode">Dark mode</a></p>
+      {% endif %}
     </div>
   </div>
   <div class="w3-row">
@@ -177,7 +181,11 @@ h2:hover .headerlink {
       <div id="search-results" class="search-results"></div>
     </div>
   </div>
+  {% if darkmode %}
+  <div class="w3-row w3-black">
+  {% else %}
   <div class="w3-row w3-white">
+  {% endif %}
     <div class="w3-quarter">
       <p></p>
       {{ nav_content | safe }}

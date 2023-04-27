@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('setdarkmode', views.set_dark_mode),
+    path('rmdarkmode', views.rm_dark_mode),
 #    path('admin/', admin.site.urls), # already defined in project views
     path('accounts/', include('django.contrib.auth.urls')),
     path('<page_url>/latest/<str:page>', views.pageview, name='pageview',),
