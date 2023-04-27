@@ -25,7 +25,7 @@ ul, #myUL {
 
 .caret::before {
   content: "\25B6";
-  color: black;
+  color: rgb(33,150,243);
   display: inline-block;
   margin-right: 6px;
 }
@@ -157,9 +157,11 @@ h2:hover .headerlink {
     </div>
     <div class="w3-quarter">
       <p>Welcome, {{ user.get_username }} <a href="{% url 'logout' %}">Sign Out</a></p>
+      <p>
       {% if user.is_superuser %}
-      <p><a href="/admin">Admin panel</a></p>
+      <a href="/admin">Admin panel</a>
       {% endif %} 
+      <a href="#">Dark mode</a></p>
     </div>
   </div>
   <div class="w3-row">
@@ -175,12 +177,12 @@ h2:hover .headerlink {
       <div id="search-results" class="search-results"></div>
     </div>
   </div>
-  <div class="w3-row">
-    <div class="w3-quarter w3-white">
+  <div class="w3-row w3-white">
+    <div class="w3-quarter">
       <p></p>
       {{ nav_content | safe }}
     </div>
-    <div class="w3-half w3-white">
+    <div class="w3-half">
       <div class="w3-row">
         {{ page_content|safe }}
       </div>
