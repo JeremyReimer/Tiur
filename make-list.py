@@ -186,6 +186,15 @@ def generate_navtree(base_directory):
                 else: # it is an index.html
                     print("It's a subfolder!")
                     folder_title = find_snippets(page_content, '<h1>', '<a')[0]
+                    # If this folder is a top folder (eg a Project top level) we need to change the title
+                    # to be not the actual document title, but the Project title from the database
+                    tree_depth = base_directory.count('/')
+                    print(">>>>>>>>>>>>>>> DIRECTORY DEPTH: " + str(tree_depth))
+                    if tree_depth == 7:
+                        print("======== NEW PROJECT FOLDER ===========")
+                        folder_dir = str(base_directory.split('/')[-2])
+                        project_object_name = Project.objects.get(name=folder_dir).display_name
+                        folder_title = project_object_name
                     print("Folder title: " + folder_title)
                     navtree_html += '<li><span class="caret" id="' + page_url + '">' + folder_title + '</a></span>\n'
                     navtree_html += '<ul class="nested">\n'
