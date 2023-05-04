@@ -13,4 +13,5 @@ urlpatterns = [
     path('<page_url>/latest/<str:directory>/', views.pageview, name='pageview', kwargs={'page': 'index.html'}),
     path('<page_url>/latest/<str:directory>/<str:page>', views.pageview, name='pageview',),
     path('<page_url>/latest/<str:directory>/<str:subdirectory>/<str:page>', views.pageview, name='pageview',),
+    path('<page_url>/latest/<str:directory>/<str:subdirectory>/<str:subsubdir>/<str:page>', views.pageview, name='pageview',),
 ]

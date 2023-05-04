@@ -103,7 +103,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
         print("Directory exists!")
     else:
         print("Creating directory...")
-        os.mkdir(incoming_directory)
+        os.makedirs(incoming_directory) # makedirs in case multiple subfolders at once
     run_cmd(command)
     # strip headers
     file_handle = open(incoming_directory + '/' + artifact_file, 'r')
@@ -166,7 +166,7 @@ def collect_docs(modeladmin, request, queryset):
         print("Directory exists!")
     else:
         print("Creating directory...")
-        os.mkdir(artifact_base_directory)
+        os.makedirs(artifact_base_directory) # makedirs in case multiple sublevels exist at once
     # collect docs from URL and save to project directory under "latest"
     artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, "latest")
     artifact_file = "index.html" # temporary

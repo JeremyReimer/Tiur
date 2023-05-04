@@ -30,7 +30,7 @@ def index(request):
     return response
 
 @login_required
-def pageview(request, page_url, page, directory='', subdirectory=''):
+def pageview(request, page_url, page, directory='', subdirectory='', subsubdir=''):
     project_list = Project.objects.order_by('name')
     footer_text = Config.objects.all().first().footer_message
     logo_filename = Config.objects.all().first().site_logo
@@ -43,7 +43,7 @@ def pageview(request, page_url, page, directory='', subdirectory=''):
     #print(logo_filename)
     template = loader.get_template('oxford2/index.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
-    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, subdirectory, page)
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, subdirectory, subsubdir, page)
     page_url_partial = page_url_full.replace(base_url, '') # use this for auto clicking on navtree
     page_url_split = page_url_partial.split("/")
     nav_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', 'navtree.html')
