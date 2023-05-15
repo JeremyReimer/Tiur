@@ -131,7 +131,7 @@ def add_category_view(base_directory):
         # Now need to add any Navigation Tree Items in this category
         nav_items = NavTreeItem.objects.filter(category=category).order_by("weight")
         for nav_item in nav_items:
-            navtree_html += '<li><a href="' + str(nav_item.item_url) + '">' + str(nav_item.display_name) + '</a></li>' 
+            navtree_html += '<li><a href="/' + str(nav_item.project) + '/latest/' + str(nav_item.item_url) + '">' + str(nav_item.display_name) + '</a></li>' 
         navtree_html += '</ul></li>'
     navtree_html += '</ul></li>'
     return
