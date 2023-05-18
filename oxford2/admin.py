@@ -155,8 +155,9 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
 @admin.action(description='Collect latest docs for selected project')
 def collect_docs(modeladmin, request, queryset):
     response = "Collecting data for project..."
-    # get name and URL for project downloading
+    # get name, project type, and URL for project downloading
     project_name = queryset.values_list('name')[0][0]
+    project_type = queryset.values_list('parser')[0][0]
     collect_url = queryset.values_list('artifact_url')[0][0]
     # remove extraneous index.html from the URL if it exists
     collect_url = collect_url.replace('index.html','')
@@ -170,9 +171,12 @@ def collect_docs(modeladmin, request, queryset):
     # collect docs from URL and save to project directory under "latest"
     artifact_directory = os.path.join(BASE_DIR, "oxford2", "artifacts", project_name, "latest")
     artifact_file = "index.html" # temporary
-    # run scraping function
     print('--------------------------------------------------')
-    scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 
+    print('Project type: ' + str(project_type))
+    # Begin scraping, but only if it's a "Sphinx" project type
+    scrape_message = 'Did not collect docs. Check logs for details.'
+    if (project_type == 1):
+        scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 
     response = response + scrape_message
     # generate navtree and searchfile
     run_cmd('python3 ' + os.path.join(BASE_DIR, "make-list.py"), Verbose=1) # run separate command to generate these

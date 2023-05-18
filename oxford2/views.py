@@ -32,6 +32,11 @@ def index(request):
 @login_required
 def pageview(request, page_url, page, directory='', subdirectory='', subsubdir=''):
     project_list = Project.objects.order_by('name')
+    tab_list_query = Project.objects.filter(parser=2).order_by("weight")
+    tab_list = []
+    for tab in tab_list_query:
+        tab_list.append(tab.display_name)
+    print("!!!TAB LIST!!!" + str(tab_list))
     footer_text = Config.objects.all().first().footer_message
     logo_filename = Config.objects.all().first().site_logo
     darkcookie = request.COOKIES.get('dw_docs_dark_mode')
@@ -73,6 +78,7 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
 
     context = {
        'project_list': project_list,
+       'tab_list': tab_list,
        'current_project': page_url,
        'page_content': page_content,
        'nav_content': nav_content,

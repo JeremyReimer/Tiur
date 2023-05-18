@@ -38,9 +38,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', "default_value")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# The following Allowed Host is an internal VM used for development--delete in prod
+# NOTE: We're allowing the app to run using any IP address. This lets the application run in things like Kubernetes.
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
