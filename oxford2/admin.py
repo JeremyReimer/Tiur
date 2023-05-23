@@ -92,18 +92,33 @@ def get_sub_directory(input_directory):
         final_filename = input_directory[last_separator:]
     return final_dir, final_filename
 
+def check_existing_dirs(check_directory):
+   # check if this directory exists, otherwise create it
+    if os.path.isdir(check_directory):
+        print("Directory exists!")
+    else:
+        print("Creating directory...")
+        os.makedirs(check_directory) # makedirs in case multiple subfolders at once
+    return
+
+def scrape_static_zip(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, incoming_url, artifact_file):
+    artifact_file = "" # For .zip files, the URL is the download by itself
+    # debugging
+    print("Downloading " + artifact_file)
+    print(" into " + incoming_directory)
+    print(" from " + incoming_url)
+    check_existing_dirs(incoming_directory)
+    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
+    return_message = "...todo..."
+    return return_message
+
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, incoming_url, artifact_file):
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
     # debugging
     print("Downloading " + artifact_file)
     print(" into " + incoming_directory)
     print(" from " + incoming_url)
-    # check if this directory exists, otherwise create it
-    if os.path.isdir(incoming_directory):
-        print("Directory exists!")
-    else:
-        print("Creating directory...")
-        os.makedirs(incoming_directory) # makedirs in case multiple subfolders at once
+    check_existing_dirs(incoming_directory)
     run_cmd(command)
     # strip headers
     file_handle = open(incoming_directory + '/' + artifact_file, 'r')
@@ -175,8 +190,11 @@ def collect_docs(modeladmin, request, queryset):
     print('Project type: ' + str(project_type))
     # Begin scraping, but only if it's a "Sphinx" project type
     scrape_message = 'Did not collect docs. Check logs for details.'
-    if (project_type == 1):
+    if (project_type == 1): # this is regular HTML Sphinx Doc
         scrape_message = scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file) 
+    if (project_type == 2): # this is Static Zipped Doc
+        scrape_message = "Retrieving Static Zipped Doc.."
+        scrape_message += scrape_static_zip(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file)
     response = response + scrape_message
     # generate navtree and searchfile
     run_cmd('python3 ' + os.path.join(BASE_DIR, "make-list.py"), Verbose=1) # run separate command to generate these
