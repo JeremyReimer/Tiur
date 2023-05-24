@@ -106,16 +106,19 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
     print(darkmode)
     #print(logo_filename)
     template = loader.get_template('oxford2/zip.html')
-    # incomplete
-    page_content = "HELLO WORLD"
-    nav_content = "None"
-    click_list = []
+    base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', 'zip', directory, subdirectory, subsubdir, page)
+    page_url_partial = page_url_full.replace(base_url, '') # use this for auto clicking on navtree
+    page_url_split = page_url_partial.split("/")
+    try:
+      with open(page_url_full, "r", encoding="utf-8") as f:
+          page_content = f.read()
+    except:
+      page_content = 'No page found at ' + str(page_url_full)
     context = {
        'tab_list': tab_list,
        'current_project': page_url,
        'page_content': page_content,
-       'nav_content': nav_content,
-       'click_list': click_list,
        'footer_text': footer_text,
        'logo_filename': logo_filename,
        'darkmode': darkmode,

@@ -176,14 +176,10 @@ h2:hover .headerlink {
   </div>
   <div class="w3-row">
     <div class="w3-bar w3-blue">
-      <a href="#home" class="w3-bar-item w3-button w3-white">Home</a>
+      <a href="/" class="w3-bar-item w3-button w3-blue">Home</a>
       {% for tab in tab_list %}
           <a href="#doc-tab1" class="w3-bar-item w3-button">{{ tab }}</a>
       {% endfor %}
-      <div class="searchbar">
-        <input type="text" id="search-input" class="search-input" placeholder="Search all docs...">
-        <img src={% static 'oxford2/search.png' %}>
-      </div>
       <div id="search-results" class="search-results"></div>
     </div>
   </div>
@@ -192,11 +188,7 @@ h2:hover .headerlink {
   {% else %}
   <div class="w3-row w3-white">
   {% endif %}
-    <div class="w3-quarter">
-      <p></p>
-      <p>Placeholder.. to remove</p>
-    </div>
-    <div class="w3-half">
+    <div class="w3-full">
       <div class="w3-row">
         {{ page_content|safe }}
       </div>
@@ -208,22 +200,4 @@ h2:hover .headerlink {
     <h4>&nbsp; {{ footer_text|safe }}</h4>
   </div>
 </div>
-<script>
-var toggler = document.getElementsByClassName("caret");
-var i;
-
-for (i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function() {
-    this.parentElement.querySelector(".nested").classList.toggle("active");
-    this.classList.toggle("caret-down");
-  });
-}
-
-var siteloadbtn = document.getElementById("allservices");
-siteloadbtn.click()
-
-{{ click_list | safe }}
-</script>
-<script type="text/javascript" src="/static/oxford2/lunr.min.js"></script>
-<script type="text/javascript" src="/static/oxford2/just-the-docs.js"></script>
 </body>
