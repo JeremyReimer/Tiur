@@ -14,4 +14,5 @@ urlpatterns = [
     path('<page_url>/latest/<str:directory>/<str:page>', views.pageview, name='pageview',),
     path('<page_url>/latest/<str:directory>/<str:subdirectory>/<str:page>', views.pageview, name='pageview',),
     path('<page_url>/latest/<str:directory>/<str:subdirectory>/<str:subsubdir>/<str:page>', views.pageview, name='pageview',),
+    path('zip/<page_url>/latest/<str:page>', views.zipview, name='zipview',),
 ]
