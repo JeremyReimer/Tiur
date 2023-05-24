@@ -102,13 +102,15 @@ def check_existing_dirs(check_directory):
     return
 
 def scrape_static_zip(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, incoming_url, artifact_file):
-    artifact_file = "" # For .zip files, the URL is the download by itself
+    artifact_file = project_name + ".zip" # For .zip files, rename the file for later extraction
     # debugging
     print("Downloading " + artifact_file)
+    print("Project name: " + project_name)
     print(" into " + incoming_directory)
     print(" from " + incoming_url)
     check_existing_dirs(incoming_directory)
     command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
+    run_cmd(command)
     return_message = "...todo..."
     return return_message
 
