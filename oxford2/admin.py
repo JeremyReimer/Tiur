@@ -55,6 +55,12 @@ def make_scrape_cmd(user, api_token, artifact_directory, artifact_url, artifact_
     print('Executing command: ' + command)
     return command
 
+def make_scrape_zip_cmd(user, api_token, artifact_directory, artifact_url, artifact_file):
+    # same as above, but don't add the filename at the end, as it's part of the URL
+    command = 'wget -O ' + artifact_directory + '/' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url
+    print('Executing command: ' + command)
+    return command
+
 def strip_extraneous(text_string):
     start_string = '<div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">'
     end_string = '<footer>'
@@ -109,9 +115,10 @@ def scrape_static_zip(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_direct
     print(" into " + incoming_directory)
     print(" from " + incoming_url)
     check_existing_dirs(incoming_directory)
-    command = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
+    command = make_scrape_zip_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
     run_cmd(command)
-    return_message = "...todo..."
+    return_message = "Downloaded .zip file..."
+    # extract .zip file into a new directory
     return return_message
 
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, incoming_url, artifact_file):
