@@ -116,9 +116,13 @@ def scrape_static_zip(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_direct
     print(" from " + incoming_url)
     check_existing_dirs(incoming_directory)
     command = make_scrape_zip_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, artifact_file)
-    run_cmd(command)
+    run_cmd(command) # Download the zip file
     return_message = "Downloaded .zip file..."
     # extract .zip file into a new directory
+    unzip_dir = incoming_directory + "/zip"
+    check_existing_dirs(unzip_dir)
+    unzip_cmd = "unzip " + incoming_directory + "/" + project_name + ".zip -d " + unzip_dir
+    run_cmd(unzip_cmd) # unzip the file
     return return_message
 
 def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, incoming_url, artifact_file):
