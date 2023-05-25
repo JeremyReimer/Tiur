@@ -31,7 +31,7 @@ def index(request):
 
 @login_required
 def pageview(request, page_url, page, directory='', subdirectory='', subsubdir=''):
-    project_list = Project.objects.order_by('name')
+    #project_list = Project.objects.order_by('name')
     tab_list_query = Project.objects.filter(parser=2).order_by("weight")
     tab_list = []
     for tab in tab_list_query:
@@ -77,7 +77,7 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
         print(temp_string)
 
     context = {
-       'project_list': project_list,
+       #'project_list': project_list,
        'tab_list': tab_list,
        'current_project': page_url,
        'page_content': page_content,
@@ -89,6 +89,38 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
     }
     return HttpResponse(template.render(context, request))
 
-
-
-
+@login_required
+def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''):
+    tab_list_query = Project.objects.filter(parser=2).order_by("weight")
+    tab_list = []
+    for tab in tab_list_query:
+        tab_list.append(tab.display_name)
+    print("!!!TAB LIST!!!" + str(tab_list))
+    footer_text = Config.objects.all().first().footer_message
+    logo_filename = Config.objects.all().first().site_logo
+    darkcookie = request.COOKIES.get('dw_docs_dark_mode')
+    if darkcookie == "dark":
+        darkmode = True
+    else:
+        darkmode = False
+    print(darkmode)
+    #print(logo_filename)
+    template = loader.get_template('oxford2/zip.html')
+    base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', 'zip', directory, subdirectory, subsubdir, page)
+    page_url_partial = page_url_full.replace(base_url, '') # use this for auto clicking on navtree
+    page_url_split = page_url_partial.split("/")
+    try:
+      with open(page_url_full, "r", encoding="utf-8") as f:
+          page_content = f.read()
+    except:
+      page_content = 'No page found at ' + str(page_url_full)
+    context = {
+       'tab_list': tab_list,
+       'current_project': page_url,
+       'page_content': page_content,
+       'footer_text': footer_text,
+       'logo_filename': logo_filename,
+       'darkmode': darkmode,
+    }
+    return HttpResponse(template.render(context, request))
