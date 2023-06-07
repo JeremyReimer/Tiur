@@ -4,3 +4,4 @@ python-dotenv==1.0.0
 python_jenkins==1.7.0
 python_ldap==3.4.3
 Requests==2.30.0
+gunicorn==20.1.0
