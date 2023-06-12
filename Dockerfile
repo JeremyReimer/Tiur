@@ -19,21 +19,24 @@ RUN useradd -ms /bin/bash tiuruser
 RUN mkdir /home/tiuruser/tiur
 COPY . /home/tiuruser/tiur
 
-# Create logfile directories
+# Create logfile, user, and nginx directories
 RUN mkdir /var/log/gunicorn
 RUN mkdir /var/run/gunicorn
 RUN mkdir /var/www/tiur
+RUN mkdir /var/lib/nginx/body
+RUN mkdir /var/lib/nginx/fastcgi
+RUN mkdir /var/lib/nginx/proxy
 
 # Set permissions
 RUN chown -R tiuruser:tiuruser /var/log/gunicorn
 RUN chown -R tiuruser:tiuruser /var/run/gunicorn
 RUN chown -R tiuruser:tiuruser /var/www/tiur
+RUN chown -R tiuruser:tiuruser /var/log/nginx
+RUN chown -R tiuruser:tiuruser /var/lib/nginx
+RUN chown -R tiuruser:tiuruser /run
 
 # Install dependencies (including gunicorn)
 RUN pip install -r /home/tiuruser/tiur/requirements.txt
-
-# Start nginx server
-CMD ["/usr/sbin/nginx"]
 
 # Switch to non-privileged user
 USER tiuruser
@@ -42,6 +45,11 @@ WORKDIR /home/tiuruser/tiur
 # Collect static files
 RUN python3 manage.py collectstatic
 
-# Start server
+# Expose HTTP port to server
 EXPOSE 80
-RUN gunicorn -c /home/tiuruser/tiur/config/gunicorn/prod.py
+
+# Copy startup file
+COPY entrypoint.sh /usr/local/bin
+
+# Start gunicorn and nginx servers
+CMD ["entrypoint.sh"]

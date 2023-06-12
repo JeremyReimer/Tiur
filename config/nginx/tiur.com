@@ -1,6 +1,7 @@
 server_tokens               off;
 access_log                  /var/log/nginx/tiur.log;
 error_log                   /var/log/nginx/tiur.log;
+daemon                      off;
 
 # This configuration will be changed to redirect to HTTPS later
 server {
