@@ -15,6 +15,9 @@ RUN ln -s /etc/nginx/sites-available/tiur.com /etc/nginx/sites-enabled
 # Create non-privileged user to run the Django app
 RUN useradd -ms /bin/bash tiuruser
 
+# Clean up old files from previous versions
+RUN rm -rf /home/tiuruser/tiur
+
 # Copy application to non-privileged user's home directory
 RUN mkdir /home/tiuruser/tiur
 COPY . /home/tiuruser/tiur
