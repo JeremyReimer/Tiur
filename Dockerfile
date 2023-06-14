@@ -31,6 +31,7 @@ RUN mkdir /var/lib/nginx/fastcgi
 RUN mkdir /var/lib/nginx/proxy
 
 # Set permissions
+RUN chown -R tiuruser:tiuruser /home/tiuruser/tiur
 RUN chown -R tiuruser:tiuruser /var/log/gunicorn
 RUN chown -R tiuruser:tiuruser /var/run/gunicorn
 RUN chown -R tiuruser:tiuruser /var/www/tiur
