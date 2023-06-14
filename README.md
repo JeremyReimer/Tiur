@@ -36,11 +36,14 @@ Tiur is currently in development. Here's what's been written so far:
 * Global, full-text indexed search using Lunr.js (searches as you type)
 * Customization (so far: upload custom main logo and add custom footer message)
 
+Here's what's being worked on RIGHT NOW:
+
+* Dockerization (app deliverable as a container)
+
 Here's what's still to come:
 
 * Code cleanup and unit tests
 * Automatic versioning support
 * More testing and bugfixing
-* Dockerization
 * Full set of documentation
 
