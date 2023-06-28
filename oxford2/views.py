@@ -35,7 +35,7 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
     tab_list_query = Project.objects.filter(parser=2).order_by("weight")
     tab_list = []
     for tab in tab_list_query:
-        tab_list.append(tab.display_name)
+        tab_list.append([tab.name, tab.display_name])
     print("!!!TAB LIST!!!" + str(tab_list))
     footer_text = Config.objects.all().first().footer_message
     logo_filename = Config.objects.all().first().site_logo
@@ -94,7 +94,7 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
     tab_list_query = Project.objects.filter(parser=2).order_by("weight")
     tab_list = []
     for tab in tab_list_query:
-        tab_list.append(tab.display_name)
+        tab_list.append([tab.name, tab.display_name])
     print("!!!TAB LIST!!!" + str(tab_list))
     footer_text = Config.objects.all().first().footer_message
     logo_filename = Config.objects.all().first().site_logo

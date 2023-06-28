@@ -43,8 +43,12 @@
   <div class="w3-row">
     <div class="w3-bar w3-blue">
       <a href="/" class="w3-bar-item w3-button w3-blue">Home</a>
-      {% for tab in tab_list %}
-          <a href="#doc-tab1" class="w3-bar-item w3-button">{{ tab }}</a>
+      {% for tab_id, tab_name in tab_list %}
+          {% if tab_id == current_project %}
+            <a href="/zip/{{ tab_id }}/latest/index.html" class="w3-bar-item w3-white w3-button">{{ tab_name }}</a>
+          {% else %}
+            <a href="/zip/{{ tab_id }}/latest/index.html" class="w3-bar-item w3-button">{{ tab_name }}</a>
+          {% endif %}
       {% endfor %}
       <div id="search-results" class="search-results"></div>
     </div>
