@@ -104,30 +104,32 @@ def add_category_view(base_directory):
         navtree_html += '<li><span class="caret" id="allservices">' + str(category) + '</span>\n'
         navtree_html += '<ul class="nested">'
         for project in cat_project_list:
-            print("-- Project: " + str(project.display_name))
-            page_file_name = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", str(project.name), "latest", "index.html")
-            print("Need to load file: " + str(page_file_name))
-            page_file_handle = open(page_file_name, "r")
-            page_file_handle_content = page_file_handle.read()
-            #print(page_file_handle_content)
-            page_file_first_link = find_snippets(page_file_handle_content,'<a class="reference internal" href="', '">')[0]
-            print('First link:' + str(page_file_first_link))   
-            page_file_full_link = str(project.name) + '/latest/' + page_file_first_link
-            print("Link to file: " + str(page_file_full_link))
-            page_file_handle.close()
-            if page_file_first_link.find('index.html') != -1: # If it's an index file, go one level deeper
-                next_file_name = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", page_file_full_link) 
-                print('Grabbing next level of navigation...' + str(next_file_name))
-                next_file_handle = open(next_file_name, "r")
-                next_file_handle_content = next_file_handle.read()
-                next_file_first_link = find_snippets(next_file_handle_content,'<a class="reference internal" href="', '">')[0]
-                next_file_first_link = page_file_first_link.replace('index.html','') + next_file_first_link 
-            else:
-                next_file_first_link = page_file_first_link
-            next_file_full_link = '/' + str(project.name) + '/latest/' + next_file_first_link
-            print('Final project page link is: ' + str(next_file_full_link))
-            next_file_handle.close()
-            navtree_html += '<li><a href="' + next_file_full_link + '">' + str(project.display_name) + '</a></li>\n'
+            print("Parser: " + str(project.parser))
+            if str(project.parser) == "Sphinx": # Only process Sphinx projects here
+                print("-- Project: " + str(project.display_name))
+                page_file_name = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", str(project.name), "latest", "index.html")
+                print("Need to load file: " + str(page_file_name))
+                page_file_handle = open(page_file_name, "r")
+                page_file_handle_content = page_file_handle.read()
+                #print(page_file_handle_content)
+                page_file_first_link = find_snippets(page_file_handle_content,'<a class="reference internal" href="', '">')[0]
+                print('First link:' + str(page_file_first_link))   
+                page_file_full_link = str(project.name) + '/latest/' + page_file_first_link
+                print("Link to file: " + str(page_file_full_link))
+                page_file_handle.close()
+                if page_file_first_link.find('index.html') != -1: # If it's an index file, go one level deeper
+                    next_file_name = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", page_file_full_link) 
+                    print('Grabbing next level of navigation...' + str(next_file_name))
+                    next_file_handle = open(next_file_name, "r")
+                    next_file_handle_content = next_file_handle.read()
+                    next_file_first_link = find_snippets(next_file_handle_content,'<a class="reference internal" href="', '">')[0]
+                    next_file_first_link = page_file_first_link.replace('index.html','') + next_file_first_link 
+                else:
+                    next_file_first_link = page_file_first_link
+                next_file_full_link = '/' + str(project.name) + '/latest/' + next_file_first_link
+                print('Final project page link is: ' + str(next_file_full_link))
+                next_file_handle.close()
+                navtree_html += '<li><a href="' + next_file_full_link + '">' + str(project.display_name) + '</a></li>\n'
         # Now need to add any Navigation Tree Items in this category
         nav_items = NavTreeItem.objects.filter(category=category).order_by("weight")
         for nav_item in nav_items:
@@ -151,15 +153,19 @@ def generate_navtree(base_directory):
             print("Directory: " + str(thing))
             new_dir = os.path.join(start_dir,thing)
             print('Now looking into: ' + new_dir)
-            # check to see if this directory is for a hidden project
+            # check to see if this directory is for a hidden project, or a static zip file
             hidden_project = 0 # default is visible
+            static_zip_project = 0 # default is not static zip
             for project in project_list:
                 project_data = project.split(', ')
                 if str(thing) == project_data[0]: # first, find the right project
                     if project_data[7] == "False": # is it marked not visible?
                         print("*** HIDDEN PROJECT DIRECTORY! ****")
                         hidden_project = 1
-            if new_dir.find('..') == -1 and hidden_project == 0: # don't go back recursively, avoid hidden
+                    if project_data[3] == "Static Zipped Doc": 
+                        print("*** STATIC ZIP DOC! ***")
+                        static_zip_project = 1
+            if new_dir.find('..') == -1 and hidden_project == 0 and static_zip_project == 0: # don't go back recursively, avoid hidden and static zip projects
                 generate_navtree(new_dir) # recursively walk through the directories
         else:
             print("File: " + str(thing))
