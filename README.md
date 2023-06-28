@@ -35,10 +35,11 @@ Tiur is currently in development. Here's what's been written so far:
 * Basic authentication for the site, with optional LDAP authentication
 * Global, full-text indexed search using Lunr.js (searches as you type)
 * Customization (so far: upload custom main logo and add custom footer message)
+* Dockerization (app deliverable and published as a container on DockerHub)
 
 Here's what's being worked on RIGHT NOW:
 
-* Dockerization (app deliverable as a container)
+* Testing and bug fixes
 
 Here's what's still to come:
 
