@@ -46,6 +46,9 @@ RUN pip install -r /home/tiuruser/tiur/requirements.txt
 USER tiuruser
 WORKDIR /home/tiuruser/tiur
 
+# Initialize database
+RUN python3 manage.py migrate
+
 # Collect static files
 RUN python3 manage.py collectstatic
 
