@@ -58,6 +58,8 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
           page_content = f.read() 
     except:
       page_content = 'No page found at ' + str(page_url_full)
+    # Change bullet point class in main page to regular bullets
+    page_content = page_content.replace('class="simple"', 'class="main-content"')
     # load navtree
     try:
       with open(nav_url_full, "r", encoding="utf-8") as n:
