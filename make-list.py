@@ -87,8 +87,13 @@ def push_index(incoming_list): # sort the list so index.html is first
             outgoing_list.append(thing)
         else:
             is_there_an_index = 1
+    # If there is no index.html, force a blank one. This is for broken builds that don't 
+    # include the index.html the way they are supposed to, so this doesn't break the navtree
     if is_there_an_index == 1:
         outgoing_list.insert(0,'index.html')
+    else:
+        print("!!!!!!!!!!!!!!!! NO INDEX.HTML")
+        # TODO: create a blank index.html in the current directory BUT ONLY if directory is empty! 
     return outgoing_list
 
 def add_category_view(base_directory):
@@ -181,7 +186,11 @@ def generate_navtree(base_directory):
                 # Check if it's an index file or a sub-file
                 if thing.find('index.html') == -1:
                     print("It's a page!")
-                    page_title = find_snippets(page_content, '<h1>', '<a')[0]
+                    try:
+                        page_title = find_snippets(page_content, '<h1>', '<a')[0]
+                    except:
+                        print("COULD NOT FIND HEADER IN PAGE")
+                        page_title = "    "
                     print("Page title: " + page_title)
                     # Clean page content and make one line for building search index
                     search_content = remove_html(page_content)
@@ -198,7 +207,11 @@ def generate_navtree(base_directory):
                     # if the filename is genindex.html, skip it, we don't want to process those index files
                     if thing.find('genindex.html') == -1:
                         print("It's a subfolder!")
-                        folder_title = find_snippets(page_content, '<h1>', '<a')[0]
+                        try: 
+                            folder_title = find_snippets(page_content, '<h1>', '<a')[0]
+                        except:
+                            folder_title = "    " # temporary fix for broken builds with no index.html
+                            print("COULD NOT FIND HEADER")
                         # If this folder is a top folder (eg a Project top level) we need to change the title
                         # to be not the actual document title, but the Project title from the database
                         tree_depth = base_directory.count('/')
