@@ -190,18 +190,19 @@ def generate_navtree(base_directory):
                         page_title = find_snippets(page_content, '<h1>', '<a')[0]
                     except:
                         print("COULD NOT FIND HEADER IN PAGE")
-                        page_title = "    "
+                        page_title = "_____"
                     print("Page title: " + page_title)
                     # Clean page content and make one line for building search index
-                    search_content = remove_html(page_content)
-                    search_file += '"' + str(page_count) + '": {\n'
-                    search_file += '    "doc": "' + page_title + '",\n'
-                    search_file += '    "title": "' + page_title + '",\n'
-                    search_file += '    "content": "' + search_content + '",\n'
-                    search_file += '    "url": "' + page_url + '",\n'
-                    search_file += '    "relUrl": "' + page_url +'"\n'
-                    search_file += '    },\n'
-                    page_count += 1
+                    if page_title != "_____":
+                        search_content = remove_html(page_content)
+                        search_file += '"' + str(page_count) + '": {\n'
+                        search_file += '    "doc": "' + page_title + '",\n'
+                        search_file += '    "title": "' + page_title + '",\n'
+                        search_file += '    "content": "' + search_content + '",\n'
+                        search_file += '    "url": "' + page_url + '",\n'
+                        search_file += '    "relUrl": "' + page_url +'"\n'
+                        search_file += '    },\n'
+                        page_count += 1
                     #navtree_html += '<li><a href="' + page_url + '">' + page_title + '</a></li>\n'
                 else: # it is an index.html
                     # if the filename is genindex.html, skip it, we don't want to process those index files
@@ -210,7 +211,7 @@ def generate_navtree(base_directory):
                         try: 
                             folder_title = find_snippets(page_content, '<h1>', '<a')[0]
                         except:
-                            folder_title = "    " # temporary fix for broken builds with no index.html
+                            folder_title = "_____" # temporary fix for broken builds with no index.html
                             print("COULD NOT FIND HEADER")
                         # If this folder is a top folder (eg a Project top level) we need to change the title
                         # to be not the actual document title, but the Project title from the database
@@ -222,20 +223,23 @@ def generate_navtree(base_directory):
                             project_object_name = Project.objects.get(name=folder_dir).display_name
                             folder_title = project_object_name
                         print("Folder title: " + folder_title)
-                        navtree_html += '<li><span class="caret" id="' + page_url + '">' + folder_title + '</a></span>\n'
-                        navtree_html += '<ul class="nested">\n'
-                        # add all links inside this index.html to the navtree at once
-                        inside_index_links = find_snippets(page_content, '<a class="reference internal" href="', '</a></li>')
-                        # quick fix for URL (since we're doing it a new way)
-                        page_url = page_url.replace('index.html', '')
-                        for index_link in inside_index_links:
-                            divider = index_link.find('">')
-                            index_sub_link = index_link[:divider]
-                            index_description = index_link[divider + 2:]
-                            print('$$$$$$$$$ Adding page: ' + index_description + ' link: ' + index_sub_link)
-                            if index_sub_link.find('index.html') == -1:
-                                navtree_html += '<li><a href="' + page_url + index_sub_link + '">' + index_description + '</a></li>\n'
-                    #print('Adding to navtree: ' + navtree_adding)
+                        if folder_title != "_____":
+                            navtree_html += '<li><span class="caret" id="' + page_url + '">' + folder_title + '</a></span>\n'
+                            navtree_html += '<ul class="nested">\n'
+                            # add all links inside this index.html to the navtree at once
+                            inside_index_links = find_snippets(page_content, '<a class="reference internal" href="', '</a></li>')
+                            # quick fix for URL (since we're doing it a new way)
+                            page_url = page_url.replace('index.html', '')
+                            for index_link in inside_index_links:
+                                 divider = index_link.find('">')
+                                 index_sub_link = index_link[:divider]
+                                 index_description = index_link[divider + 2:]
+                                 print('$$$$$$$$$ Adding page: ' + index_description + ' link: ' + index_sub_link)
+                                 if index_sub_link.find('index.html') == -1:
+                                     navtree_html += '<li><a href="' + page_url + index_sub_link + '">' + index_description + '</a></li>\n'
+                        else:
+                            navtree_html += '<li><ul>'
+                        #print('Adding to navtree: ' + navtree_adding)
             else:
                 print('Skipping file...')
     print('Finished directory, moving on...')
