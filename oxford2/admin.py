@@ -162,6 +162,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
         cp_cmd = "cp " + incoming_directory + image_link + " " +  os.path.join(BASE_DIR, "oxford2", "static", "oxford2", "artifacts") + '/' + project_name + "_" + raw_image_filename
         print("Copying image to static directory... ")
         run_cmd(cp_cmd)
+        input("Press Enter to continue...")
     # get internal link list
     link_list = find_snippets(file_stripped_text, '<a class="reference internal" href="', '">')
     # return confirmation (debugging for now)
