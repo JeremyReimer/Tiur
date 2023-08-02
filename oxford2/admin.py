@@ -146,14 +146,14 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
     file_handle = open(incoming_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
     file_handle.close()
-    # Create images subdirectory if it doesn't exist
-    if os.path.isdir(incoming_directory + '/_images'):
-        print("Image directory exists!")
-    else:
-        print("Creating image directory...")
-        os.mkdir(incoming_directory + '/_images')
     # Download all images on this page
     for image_link in image_list:
+        # Create images subdirectory if it doesn't exist
+        if os.path.isdir(incoming_directory + '/_images'):
+            print("Image directory exists!")
+        else:
+            print("Creating image directory...")
+            os.mkdir(incoming_directory + '/_images')
         print("Downloading image: " + image_link)
         image_dl_cmd = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, image_link)
         run_cmd(image_dl_cmd)

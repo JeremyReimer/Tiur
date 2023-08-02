@@ -170,7 +170,7 @@ def generate_navtree(base_directory):
                     if project_data[3] == "Static Zipped Doc": 
                         print("*** STATIC ZIP DOC! ***")
                         static_zip_project = 1
-            if new_dir.find('..') == -1 and hidden_project == 0 and static_zip_project == 0: # don't go back recursively, avoid hidden and static zip projects
+            if thing != "_images" and new_dir.find('..') == -1 and hidden_project == 0 and static_zip_project == 0: # don't go back recursively, skip image directories, avoid hidden and static zip projects
                 generate_navtree(new_dir) # recursively walk through the directories
         else:
             print("File: " + str(thing))
