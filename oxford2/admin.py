@@ -146,6 +146,17 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
     file_handle = open(incoming_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
     file_handle.close()
+    # Create images subdirectory if it doesn't exist
+    if os.path.isdir(incoming_directory + '/_images'):
+        print("Image directory exists!")
+    else:
+        print("Creating image directory...")
+        os.mkdir(incoming_directory + '/_images')
+    # Download all images on this page
+    for image_link in image_list:
+        print("Downloading image: " + image_link)
+        image_dl_cmd = make_scrape_cmd(JENKINS_USER, JENKINS_TOKEN, incoming_directory, incoming_url, image_link)
+        run_cmd(image_dl_cmd)
     # get internal link list
     link_list = find_snippets(file_stripped_text, '<a class="reference internal" href="', '">')
     # return confirmation (debugging for now)
@@ -153,7 +164,7 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
     return_message += " Image list: " + str(image_list)
     return_message += " Link list: " + str(link_list)
     # Remove any bad links. Bad links are images that link to themselves, or links to pages
-    # that have already been downloaded. We don't want to have them in our list.
+    # that have already been downloaded, or a parent directory (..) We don't want to have them in our list.
     clean_list = [] # Make a blank list to copy into
     for test_link in link_list:
         print("Checking link: " + test_link)

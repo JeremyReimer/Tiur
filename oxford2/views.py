@@ -30,7 +30,7 @@ def index(request):
     return response
 
 @login_required
-def pageview(request, page_url, page, directory='', subdirectory='', subsubdir=''):
+def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='', subsubsubdir=''):
     #project_list = Project.objects.order_by('name')
     tab_list_query = Project.objects.filter(parser=2).order_by("weight")
     tab_list = []
@@ -48,7 +48,7 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
     #print(logo_filename)
     template = loader.get_template('oxford2/index.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
-    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, subdirectory, subsubdir, page)
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', directory, subdirectory, subsubdir, subsubsubdir, page)
     page_url_partial = page_url_full.replace(base_url, '') # use this for auto clicking on navtree
     page_url_split = page_url_partial.split("/")
     nav_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', 'navtree.html')
@@ -92,7 +92,7 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
     return HttpResponse(template.render(context, request))
 
 @login_required
-def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''):
+def zipview(request, page_url, page, directory='', subdirectory='', subsubdir='', subsubsubdir=''):
     tab_list_query = Project.objects.filter(parser=2).order_by("weight")
     tab_list = []
     for tab in tab_list_query:
@@ -109,7 +109,7 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
     #print(logo_filename)
     template = loader.get_template('oxford2/zip.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
-    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', 'zip', directory, subdirectory, subsubdir, page)
+    page_url_full = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts', page_url, 'latest', 'zip', directory, subdirectory, subsubdir, subsubsubdir, page)
     page_url_partial = page_url_full.replace(base_url, '') # use this for auto clicking on navtree
     page_url_split = page_url_partial.split("/")
     try:
