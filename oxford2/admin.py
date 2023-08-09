@@ -51,13 +51,16 @@ def run_cmd(cmd, verbose = False, *args, **kwargs):
     pass
 
 def make_scrape_cmd(user, api_token, artifact_directory, artifact_url, artifact_file):
-    command = 'wget -O ' + artifact_directory + '/' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
+    temp_download_path = artifact_directory + '/' + artifact_file
+    temp_download_path = temp_download_path.replace('../', '') # delete relative paths when saving images
+    command = 'wget -O ' + temp_download_path + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url + artifact_file
     print('Executing command: ' + command)
     return command
 
 def make_scrape_zip_cmd(user, api_token, artifact_directory, artifact_url, artifact_file):
     # same as above, but don't add the filename at the end, as it's part of the URL
-    command = 'wget -O ' + artifact_directory + '/' + artifact_file + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url
+    temp_download_path = artifact_directory + '/' + artifact_file
+    command = 'wget -O ' + temp_download_path + ' -P ' + artifact_directory + ' --auth-no-challenge --user=' + user + ' --password=' + api_token + ' ' + artifact_url
     print('Executing command: ' + command)
     return command
 
@@ -142,6 +145,8 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
     image_list = find_snippets(file_stripped_text, '<img alt="', '" ')
     # Replace image URLs (add project name to front of image link to avoid duplicates)
     file_stripped_text = file_stripped_text.replace('_images/', '/static/oxford2/artifacts/' + project_name + '_')
+    file_stripped_text = file_stripped_text.replace('src="../../','src="') # Remove relative image paths
+    file_stripped_text = file_stripped_text.replace('src="../"', 'src="') 
     # Save the stripped file back to where it was
     file_handle = open(incoming_directory + '/' + artifact_file, 'w')
     file_handle.write(file_stripped_text)
@@ -160,9 +165,11 @@ def scrape_docs(JENKINS_USER, JENKINS_TOKEN, project_name, incoming_directory, i
         # copy image into Oxford's static image directory
         raw_image_filename = image_link.replace('_images/','')
         cp_cmd = "cp " + incoming_directory + image_link + " " +  os.path.join(BASE_DIR, "oxford2", "static", "oxford2", "artifacts") + '/' + project_name + "_" + raw_image_filename
+        cp_cmd = cp_cmd.replace('../','') # remove relative paths 
         print("Copying image to static directory... ")
+        print("Executing: " + cp_cmd)
         run_cmd(cp_cmd)
-        # input("Press Enter to continue...") # debugging
+        #input("Press Enter to continue...") # debugging
     # get internal link list
     link_list = find_snippets(file_stripped_text, '<a class="reference internal" href="', '">')
     # return confirmation (debugging for now)
