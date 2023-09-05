@@ -129,11 +129,11 @@ def add_category_view(base_directory):
                     next_file_handle_content = next_file_handle.read()
                     next_file_first_link = find_snippets(next_file_handle_content,'<a class="reference internal" href="', '">')[0]
                     next_file_first_link = page_file_first_link.replace('index.html','') + next_file_first_link 
+                    next_file_handle.close()
                 else:
                     next_file_first_link = page_file_first_link
                 next_file_full_link = '/' + str(project.name) + '/latest/' + next_file_first_link
                 print('Final project page link is: ' + str(next_file_full_link))
-                next_file_handle.close()
                 navtree_html += '<li><a href="' + next_file_full_link + '">' + str(project.display_name) + '</a></li>\n'
         # Now need to add any Navigation Tree Items in this category
         nav_items = NavTreeItem.objects.filter(category=category).order_by("weight")
