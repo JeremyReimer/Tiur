@@ -58,5 +58,8 @@ EXPOSE 80
 # Copy startup file
 COPY entrypoint.sh /usr/local/bin
 
+# Create project images directory
+RUN mkdir /home/tiuruser/tiur/oxford2/static/oxford2/artifacts
+
 # Start gunicorn and nginx servers
 CMD ["entrypoint.sh"]
