@@ -106,6 +106,7 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
     else:
         darkmode = False
     print(darkmode)
+    print("Current project: " + page_url)
     #print(logo_filename)
     template = loader.get_template('oxford2/zip.html')
     base_url = os.path.join(settings.BASE_DIR, 'oxford2', 'artifacts')
@@ -117,6 +118,9 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
           page_content = f.read()
     except:
       page_content = 'No page found at ' + str(page_url_full)
+    # Rewrite links to images and Javascript files
+    page_content = page_content.replace('src="','src="/static/oxford2/artifacts/' + page_url + "_")
+    page_content = page_content.replace('<link href="', '<link href="/static/oxford2/artifacts/' + page_url + '_')
     context = {
        'tab_list': tab_list,
        'current_project': page_url,
