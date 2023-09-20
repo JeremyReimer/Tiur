@@ -12,5 +12,6 @@ files_list = os.listdir(working_dir)
 for file in files_list:
     if file.find('.js') != -1  or file.find('.css') != -1 or file.find('.png') != -1 or file.find('.jpg') != -1:
         destination_file = destination_dir + '/' + project_name + "_" + file
-        print(destination_file)
+        cmd = 'cp ' + working_dir + '/' + file + ' ' + destination_file
+        print(cmd)
 
