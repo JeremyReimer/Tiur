@@ -121,6 +121,8 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
     # Rewrite links to images and Javascript files
     page_content = page_content.replace('src="','src="/static/oxford2/artifacts/' + page_url + "_")
     page_content = page_content.replace('<link href="', '<link href="/static/oxford2/artifacts/' + page_url + '_')
+    # Temporary fix for subdirectories 
+    page_content = page_content.replace(page_url + '_search','/search')
     context = {
        'tab_list': tab_list,
        'current_project': page_url,

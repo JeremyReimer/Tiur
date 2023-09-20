@@ -232,6 +232,7 @@ def collect_docs(modeladmin, request, queryset):
     if (project_type == 2): # this is Static Zipped Doc
         scrape_message = "Retrieving Static Zipped Doc.."
         scrape_message += scrape_static_zip(JENKINS_USER, JENKINS_TOKEN, project_name, artifact_directory, collect_url, artifact_file)
+        # TODO: Add script for copying static .js,.css,.png,.jpg files to /oxford2/static/ directory and renaming
     response = response + scrape_message
     # generate navtree and searchfile
     run_cmd('python3 ' + os.path.join(BASE_DIR, "make-list.py"), Verbose=1) # run separate command to generate these
