@@ -79,7 +79,7 @@ def find_snippets(text_string, sub_string, end_string):
         text_start = text_end + len(end_string)
     return snippets_list
 
-def push_index(incoming_list): # sort the list so index.html is first
+def push_index(incoming_list, current_dir): # sort the list so index.html is first
     outgoing_list = []
     is_there_an_index = 0
     for thing in incoming_list:
@@ -87,13 +87,14 @@ def push_index(incoming_list): # sort the list so index.html is first
             outgoing_list.append(thing)
         else:
             is_there_an_index = 1
-    # If there is no index.html, force a blank one. This is for broken builds that don't 
+    # If there is no index.html, create a blank one. This is for broken builds that don't 
     # include the index.html the way they are supposed to, so this doesn't break the navtree
     if is_there_an_index == 1:
         outgoing_list.insert(0,'index.html')
     else:
         print("!!!!!!!!!!!!!!!! NO INDEX.HTML")
-        # TODO: create a blank index.html in the current directory BUT ONLY if directory is empty! 
+        # Create a blank index.html in the current directory since it does not exist 
+        # NOTE: This is being stubbed out, in favor of a list of directories to stub index.html into 
     return outgoing_list
 
 def add_category_view(base_directory):
@@ -151,7 +152,7 @@ def generate_navtree(base_directory):
     print("Generating nav tree...")
     print(start_dir)
     dir_list = sorted(os.listdir(start_dir))
-    dir_list = push_index(dir_list) # push index.html to the front
+    dir_list = push_index(dir_list, start_dir) # push index.html to the front (passing in current dir)
     print(dir_list)
     for thing in dir_list:
         if os.path.isdir(os.path.join(start_dir,thing)):

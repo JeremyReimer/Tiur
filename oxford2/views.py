@@ -123,6 +123,8 @@ def zipview(request, page_url, page, directory='', subdirectory='', subsubdir=''
     page_content = page_content.replace('<link href="', '<link href="/static/oxford2/artifacts/' + page_url + '_')
     # Temporary fix for subdirectories 
     page_content = page_content.replace(page_url + '_search','/search')
+    page_content = page_content.replace(page_url + '_about','/about')    
+    page_content = page_content.replace('../','/static/oxford2/artifacts/' + page_url + '_')
     context = {
        'tab_list': tab_list,
        'current_project': page_url,
