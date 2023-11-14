@@ -4,7 +4,7 @@
 # Will be moved into admin.py after testing.
 
 import os
-project_name = "client-code-api" # will be taken from function later
+project_name = "unreal-docs" # will be taken from function later
 working_dir = os.path.join(os.getcwd(), 'oxford2', 'artifacts', project_name, 'latest', 'zip')
 destination_dir = os.path.join(os.getcwd(), 'oxford2', 'static', 'oxford2', 'artifacts')
 print(working_dir)

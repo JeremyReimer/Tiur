@@ -248,6 +248,14 @@ def generate_navtree(base_directory):
     return
 
 # start of main script
+
+# check to see if build bodge file is present, if so, add in blank index.htmls to each path
+if os.path.exists(os.path.join(BASE_DIR, "tiur", "build-bodges.txt")):
+    print("Bodge file exists!")
+else:
+    print("No bodge file detected.")
+#input("Press Enter to continue...")
+
 navtree_html += '<ul id="myUL">\n'
 navtree_html += '<li><span class="caret" id="allservices">All services</span>\n'
 navtree_html += '<ul class="nested">'
