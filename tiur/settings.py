@@ -29,6 +29,9 @@ if os.path.isfile(dotenv_file):
 LOGIN_URL = '/accounts/login/?next=/'
 LOGIN_REDIRECT_URL = '/'
 
+# Default logout URL
+LOGOUT_REDIRECT_URL = '/'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
