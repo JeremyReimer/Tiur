@@ -101,7 +101,7 @@ def add_category_view(base_directory):
     global navtree_html
     global category_list
     # This adds an optional category-based view of projects
-    navtree_html += '<li><span class="caret" id="allservices">Categories</span>\n'
+    navtree_html += '<li><span class="caret" id="allcategories">Categories</span>\n'
     navtree_html += '<ul class="nested">'
     for category in Category.objects.all().order_by("display_name"):
         #category_list.append(category)
