@@ -215,7 +215,6 @@ h2:hover .headerlink {
 <script>
 var toggler = document.getElementsByClassName("caret");
 var i;
-
 for (i = 0; i < toggler.length; i++) {
   toggler[i].addEventListener("click", function() {
     this.parentElement.querySelector(".nested").classList.toggle("active");
@@ -223,11 +222,12 @@ for (i = 0; i < toggler.length; i++) {
   });
 }
 
-var siteloadbtn = document.getElementById("allservices");
-siteloadbtn.click()
-var siteloadbtn2 = document.getElementById("allcategories");
-siteloadbtn2.click()
-
+window.addEventListener('DOMContentLoaded', () => {
+    var siteloadbtn = document.getElementById("allservices");
+    siteloadbtn.click()
+    var siteloadbtn2 = document.getElementById("allcategories");
+    siteloadbtn2.click()
+});
 
 {{ click_list | safe }}
 </script>
