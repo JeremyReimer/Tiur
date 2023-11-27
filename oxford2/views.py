@@ -75,7 +75,7 @@ def pageview(request, page_url, page, directory='', subdirectory='', subsubdir='
         temp_list = page_url_split[1:x+2]
         temp_string = '/' + '/'.join(temp_list)+'/index.html'
         click_list += 'var testloadbtn' + str(x) + ' = document.getElementById("' + temp_string + '");\n'
-        click_list += 'testloadbtn' + str(x) + '.click()\n'
+        click_list += 'testloadbtn' + str(x) + '.click();\n'
         print(temp_string)
 
     context = {
