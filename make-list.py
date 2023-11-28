@@ -50,6 +50,8 @@ global page_count
 page_count = 0 # For building the search index file search-data.json
 global search_file
 search_file = '{\n' # The search file text
+global hidden_project
+hidden_project = 0 # Whether or not a project is hidden
 
 HREMOVE = re.compile('<.*?>')
 
@@ -100,6 +102,7 @@ def push_index(incoming_list, current_dir): # sort the list so index.html is fir
 def add_category_view(base_directory):
     global navtree_html
     global category_list
+    global hidden_project
     # This adds an optional category-based view of projects
     navtree_html += '<li><span class="caret" id="allcategories">Categories</span>\n'
     navtree_html += '<ul class="nested">'
@@ -148,6 +151,7 @@ def generate_navtree(base_directory):
     global navtree_html
     global search_file
     global page_count
+    global hidden_project
     start_dir = os.path.join(BASE_DIR, "tiur", "oxford2", "artifacts", base_directory)
     print("Generating nav tree...")
     print(start_dir)
@@ -160,7 +164,6 @@ def generate_navtree(base_directory):
             new_dir = os.path.join(start_dir,thing)
             print('Now looking into: ' + new_dir)
             # check to see if this directory is for a hidden project, or a static zip file
-            hidden_project = 0 # default is visible
             static_zip_project = 0 # default is not static zip
             for project in project_list:
                 project_data = project.split(', ')
@@ -168,10 +171,12 @@ def generate_navtree(base_directory):
                     if project_data[7] == "False": # is it marked not visible?
                         print("*** HIDDEN PROJECT DIRECTORY! ****")
                         hidden_project = 1
+                    else:
+                        hidden_project = 0
                     if project_data[3] == "Static Zipped Doc": 
                         print("*** STATIC ZIP DOC! ***")
                         static_zip_project = 1
-            if thing != "_images" and new_dir.find('..') == -1 and hidden_project == 0 and static_zip_project == 0: # don't go back recursively, skip image directories, avoid hidden and static zip projects
+            if thing != "_images" and new_dir.find('..') == -1 and static_zip_project == 0: # don't go back recursively, skip image directories, avoid hidden and static zip projects
                 generate_navtree(new_dir) # recursively walk through the directories
         else:
             print("File: " + str(thing))
@@ -224,7 +229,8 @@ def generate_navtree(base_directory):
                             project_object_name = Project.objects.get(name=folder_dir).display_name
                             folder_title = project_object_name
                         print("Folder title: " + folder_title)
-                        if folder_title != "_____":
+                        print("Hidden project?:" + str(hidden_project))
+                        if folder_title != "_____" and hidden_project == 0:
                             navtree_html += '<li><span class="caret" id="' + page_url + '">' + folder_title + '</a></span>\n'
                             navtree_html += '<ul class="nested">\n'
                             # add all links inside this index.html to the navtree at once
@@ -238,13 +244,14 @@ def generate_navtree(base_directory):
                                  print('$$$$$$$$$ Adding page: ' + index_description + ' link: ' + index_sub_link)
                                  if index_sub_link.find('index.html') == -1:
                                      navtree_html += '<li><a href="' + page_url + index_sub_link + '">' + index_description + '</a></li>\n'
-                        else:
+                        elif hidden_project == 0:
                             navtree_html += '<li><ul>'
                         #print('Adding to navtree: ' + navtree_adding)
             else:
                 print('Skipping file...')
     print('Finished directory, moving on...')
-    navtree_html += '</ul></li>\n'
+    if hidden_project == 0:
+        navtree_html += '</ul></li>\n'
     return
 
 # start of main script
