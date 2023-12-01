@@ -154,7 +154,14 @@ AUTH_LDAP_BIND_DN = os.environ.get('AUTH_LDAP_BIND_DN', "default_value")
 AUTH_LDAP_BIND_PW = os.environ.get('AUTH_LDAP_BIND_PW', "default_value")
 AUTH_LDAP_BIND_PASSWORD = os.environ.get('AUTH_LDAP_BIND_PW', "default_value")
 AUTH_LDAP_OU_DC = os.environ.get('AUTH_LDAP_OU_DC', "default_value")
-AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_OU_DC, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
+#AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_OU_DC, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
+AUTH_LDAP_FULL = os.environ.get('AUTH_LDAP_FULL', "default_value").split('\n')
+auth_union_list = []
+for ldapitem in AUTH_LDAP_FULL:
+    print("LDAP DOMAIN!>>>>>" + ldapitem)
+    auth_union_list.append(LDAPSearch(ldapitem, ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)"))
+print(auth_union_list)
+AUTH_LDAP_USER_SEARCH = LDAPSearchUnion(*auth_union_list)
 
 # debugging
 print(AUTH_LDAP_OU_DC)
