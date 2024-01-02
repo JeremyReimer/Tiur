@@ -153,6 +153,52 @@ h2:hover .headerlink {
 }
 {% endif %}
 
+.rst-content dl:not(.docutils) dt {
+    display: inline-block;
+    margin: 6px 0;
+    font-size: 90%;
+    line-height: normal;
+    background: #e7f2fa;
+    color: #333;
+    font-weight: bold;
+    border-top: solid 3px #6ab0de;
+    padding: 6px;
+    position: relative
+}
+
+.rst-content .note,
+.rst-content .attention,
+.rst-content .caution,
+.rst-content .danger,
+.rst-content .error,
+.rst-content .hint,
+.rst-content .important,
+.rst-content .tip,
+.rst-content .warning,
+.rst-content .seealso,
+.rst-content .admonition-todo {
+    padding: 12px;
+    line-height: 24px;
+    margin-bottom: 24px;
+    background: #e7f2fa
+}
+
+.wy-alert.wy-alert-danger .rst-content .admonition-title,
+.rst-content .wy-alert.wy-alert-danger .admonition-title,
+.rst-content .wy-alert-danger.note .admonition-title,
+.rst-content .wy-alert-danger.attention .admonition-title,
+.rst-content .wy-alert-danger.caution .admonition-title,
+.rst-content .danger .admonition-title,
+.rst-content .error .admonition-title,
+.rst-content .wy-alert-danger.hint .admonition-title,
+.rst-content .wy-alert-danger.important .admonition-title,
+.rst-content .wy-alert-danger.tip .admonition-title,
+.rst-content .wy-alert-danger.warning .admonition-title,
+.rst-content .wy-alert-danger.seealso .admonition-title,
+.rst-content .wy-alert-danger.admonition-todo .admonition-title {
+    background: #f29f97
+
+
 </style>
 
 <body>
@@ -202,7 +248,9 @@ h2:hover .headerlink {
     </div>
     <div class="w3-half">
       <div class="w3-row">
+        <div class="rst-content">
         {{ page_content|safe }}
+        </div>
       </div>
     </div>
     <div class="w3-quarter w3-white">
