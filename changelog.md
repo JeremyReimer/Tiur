@@ -1,6 +1,7 @@
 Oxford 2 Changelog
 ==================
 
+2.0.6 - Jan 04, 2024 - Added a big chunk of Just The Docs CSS theme code to get API docs and code blocks correctly formatted<br/>
 2.0.5 - Dec 11, 2023 - Adjustment of colors for Dark Mode (dark grey vs black)<br/>
 2.0.4 - Dec 01, 2023 - Fix for allowing multiple LDAP OUs in the config file<br/>
 2.0.3 - Nov 28, 2023 - Fix for adding documents in hidden projects (like Misc) to the search index<br/>

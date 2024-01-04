@@ -381,21 +381,6 @@ small {
 .rst-content .warning,
 .rst-content .seealso,
 .rst-content .admonition-todo,
-.btn,
-input[type="text"],
-input[type="password"],
-input[type="email"],
-input[type="url"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="week"],
-input[type="number"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
 select,
 textarea,
 .wy-menu-vertical li.on a,
@@ -915,7 +900,7 @@ textarea,
 .wy-inline-validate.wy-inline-validate-warning .wy-input-context:before,
 .wy-inline-validate.wy-inline-validate-info .wy-input-context:before,
 .rst-content .admonition-title:before {
-    content: "ïª"
+    content: "\24d8";
 }
 .fa-gift:before {
     content: "ï«"
@@ -935,7 +920,7 @@ textarea,
 }
 .fa-warning:before,
 .fa-exclamation-triangle:before {
-    content: "ï±"
+    content: "\26a0"
 }
 .fa-plane:before {
     content: "ï²"
@@ -2553,7 +2538,7 @@ a .icon {
 .rst-content .wy-alert-info.warning,
 .rst-content .seealso,
 .rst-content .wy-alert-info.admonition-todo {
-    background: #e7f2fa
+    background: #6ab0de;
 }
 .wy-alert.wy-alert-info .wy-alert-title,
 .rst-content .note .wy-alert-title,
@@ -2965,50 +2950,7 @@ textarea {
 .wy-control-group .wy-form-thirds select {
     width: 100%
 }
-.wy-control-group .wy-form-full input[type="text"],
-.wy-control-group .wy-form-full input[type="password"],
-.wy-control-group .wy-form-full input[type="email"],
-.wy-control-group .wy-form-full input[type="url"],
-.wy-control-group .wy-form-full input[type="date"],
-.wy-control-group .wy-form-full input[type="month"],
-.wy-control-group .wy-form-full input[type="time"],
-.wy-control-group .wy-form-full input[type="datetime"],
-.wy-control-group .wy-form-full input[type="datetime-local"],
-.wy-control-group .wy-form-full input[type="week"],
-.wy-control-group .wy-form-full input[type="number"],
-.wy-control-group .wy-form-full input[type="search"],
-.wy-control-group .wy-form-full input[type="tel"],
-.wy-control-group .wy-form-full input[type="color"],
-.wy-control-group .wy-form-halves input[type="text"],
-.wy-control-group .wy-form-halves input[type="password"],
-.wy-control-group .wy-form-halves input[type="email"],
-.wy-control-group .wy-form-halves input[type="url"],
-.wy-control-group .wy-form-halves input[type="date"],
-.wy-control-group .wy-form-halves input[type="month"],
-.wy-control-group .wy-form-halves input[type="time"],
-.wy-control-group .wy-form-halves input[type="datetime"],
-.wy-control-group .wy-form-halves input[type="datetime-local"],
-.wy-control-group .wy-form-halves input[type="week"],
-.wy-control-group .wy-form-halves input[type="number"],
-.wy-control-group .wy-form-halves input[type="search"],
-.wy-control-group .wy-form-halves input[type="tel"],
-.wy-control-group .wy-form-halves input[type="color"],
-.wy-control-group .wy-form-thirds input[type="text"],
-.wy-control-group .wy-form-thirds input[type="password"],
-.wy-control-group .wy-form-thirds input[type="email"],
-.wy-control-group .wy-form-thirds input[type="url"],
-.wy-control-group .wy-form-thirds input[type="date"],
-.wy-control-group .wy-form-thirds input[type="month"],
-.wy-control-group .wy-form-thirds input[type="time"],
-.wy-control-group .wy-form-thirds input[type="datetime"],
-.wy-control-group .wy-form-thirds input[type="datetime-local"],
-.wy-control-group .wy-form-thirds input[type="week"],
-.wy-control-group .wy-form-thirds input[type="number"],
-.wy-control-group .wy-form-thirds input[type="search"],
-.wy-control-group .wy-form-thirds input[type="tel"],
-.wy-control-group .wy-form-thirds input[type="color"] {
-    width: 100%
-}
+
 .wy-control-group .wy-form-full {
     float: left;
     display: block;
@@ -3112,10 +3054,7 @@ textarea[readonly] {
     cursor: not-allowed;
     background-color: #fafafa
 }
-input[type="radio"][disabled],
-input[type="checkbox"][disabled] {
-    cursor: not-allowed
-}
+
 .wy-checkbox,
 .wy-radio {
     margin: 6px 0;
@@ -3205,22 +3144,7 @@ input[type="checkbox"][disabled] {
 .wy-control-group.wy-control-group-error>label {
     color: #E74C3C
 }
-.wy-control-group.wy-control-group-error input[type="text"],
-.wy-control-group.wy-control-group-error input[type="password"],
-.wy-control-group.wy-control-group-error input[type="email"],
-.wy-control-group.wy-control-group-error input[type="url"],
-.wy-control-group.wy-control-group-error input[type="date"],
-.wy-control-group.wy-control-group-error input[type="month"],
-.wy-control-group.wy-control-group-error input[type="time"],
-.wy-control-group.wy-control-group-error input[type="datetime"],
-.wy-control-group.wy-control-group-error input[type="datetime-local"],
-.wy-control-group.wy-control-group-error input[type="week"],
-.wy-control-group.wy-control-group-error input[type="number"],
-.wy-control-group.wy-control-group-error input[type="search"],
-.wy-control-group.wy-control-group-error input[type="tel"],
-.wy-control-group.wy-control-group-error input[type="color"] {
-    border: solid 1px #E74C3C
-}
+
 .wy-control-group.wy-control-group-error textarea {
     border: solid 1px #E74C3C
 }
@@ -3293,73 +3217,7 @@ input[type="checkbox"][disabled] {
     -o-transform: scaleX(-1) rotate(270deg);
     transform: scaleX(-1) rotate(270deg)
 }
-@media only screen and (max-width: 480px) {
-    .wy-form button[type="submit"] {
-        margin: 0.7em 0 0
-    }
-    .wy-form input[type="text"],
-    .wy-form input[type="password"],
-    .wy-form input[type="email"],
-    .wy-form input[type="url"],
-    .wy-form input[type="date"],
-    .wy-form input[type="month"],
-    .wy-form input[type="time"],
-    .wy-form input[type="datetime"],
-    .wy-form input[type="datetime-local"],
-    .wy-form input[type="week"],
-    .wy-form input[type="number"],
-    .wy-form input[type="search"],
-    .wy-form input[type="tel"],
-    .wy-form input[type="color"] {
-        margin-bottom: 0.3em;
-        display: block
-    }
-    .wy-form label {
-        margin-bottom: 0.3em;
-        display: block
-    }
-    .wy-form input[type="password"],
-    .wy-form input[type="email"],
-    .wy-form input[type="url"],
-    .wy-form input[type="date"],
-    .wy-form input[type="month"],
-    .wy-form input[type="time"],
-    .wy-form input[type="datetime"],
-    .wy-form input[type="datetime-local"],
-    .wy-form input[type="week"],
-    .wy-form input[type="number"],
-    .wy-form input[type="search"],
-    .wy-form input[type="tel"],
-    .wy-form input[type="color"] {
-        margin-bottom: 0
-    }
-    .wy-form-aligned .wy-control-group label {
-        margin-bottom: 0.3em;
-        text-align: left;
-        display: block;
-        width: 100%
-    }
-    .wy-form-aligned .wy-control {
-        margin: 1.5em 0 0 0
-    }
-    .wy-form .wy-help-inline,
-    .wy-form-message-inline,
-    .wy-form-message {
-        display: block;
-        font-size: 80%;
-        padding: 6px 0
-    }
-}
-@media screen and (max-width: 768px) {
-    .tablet-hide {
-        display: none
-    }
-}
-@media screen and (max-width: 480px) {
-    .mobile-hide {
-        display: none
-    }
-}
+
 .float-left {
     float: left
 }
@@ -4707,7 +4565,7 @@ span[id*='MathJax-Span'] {
     padding: 12px;
     line-height: 24px;
     margin-bottom: 24px;
-    background: #e7f2fa
+    background: #6ab0de;
 }
 
 .wy-alert.wy-alert-danger .rst-content .admonition-title,
@@ -4726,7 +4584,7 @@ span[id*='MathJax-Span'] {
     background: #f29f97
 
 .rst-content .admonition-title:before {
-    content: "ïª"
+    content: "\24d8;"
 }
 
 </style>
